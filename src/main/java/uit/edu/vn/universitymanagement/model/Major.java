@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.springframework.context.annotation.Lazy;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +30,5 @@ public class Major {
     private String name;
     private Date creationDate;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @Lazy
     private Faculty faculty;
 }
