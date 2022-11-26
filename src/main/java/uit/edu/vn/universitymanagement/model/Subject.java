@@ -1,11 +1,14 @@
 package uit.edu.vn.universitymanagement.model;
 
+import java.util.List;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -33,4 +36,12 @@ public class Subject {
     private Metadata metadata;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Faculty faculty;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "mandatorySubjects")
+    private List<Curriculum> mandatoryCurriculum;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "optionalSubjects")
+    private List<Curriculum> optionalCurriculum;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Teacher> teachers;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Subject> prerequisiteSubjects;
 }

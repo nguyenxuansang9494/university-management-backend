@@ -8,8 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
@@ -35,8 +36,12 @@ public class Curriculum {
     private Metadata metadata;
     @Embedded
     private Term firstAppliedTerm;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Major major;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Subject> subjects;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "mandatory_subjects")
+    private List<Subject> mandatorySubjects;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "optional_subjects")
+    private List<Subject> optionalSubjects;
 }
