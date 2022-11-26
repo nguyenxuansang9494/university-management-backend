@@ -34,4 +34,6 @@ public class Faculty {
     private List<Major> majors;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Subject> subjects;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Teacher> teachers;
 }

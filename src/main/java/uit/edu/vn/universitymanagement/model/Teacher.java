@@ -2,13 +2,13 @@ package uit.edu.vn.universitymanagement.model;
 
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
@@ -23,15 +23,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Curriculum {
-
+public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Curriculum_id_seq")
-    @SequenceGenerator(name = "Curriculum_id_seq", allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Teacher_id_seq")
+    @SequenceGenerator(name = "Teacher_id_seq", allocationSize = 100)
     private Long id;
-    private String name;
-    @OneToOne(optional = false)
-    private Major major;
-    @OneToMany(fetch = FetchType.LAZY)
+    @Embedded
+    private PersonalInfomation personalInfomation;
+    @ManyToMany
     private List<Subject> subjects;
+    @ManyToOne
+    private Faculty faculty;
 }
