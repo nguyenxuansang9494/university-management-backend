@@ -1,9 +1,9 @@
 package uit.edu.vn.universitymanagement.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +30,8 @@ public class Faculty {
     @SequenceGenerator(name = "Faculty_id_seq", allocationSize = 100)
     private Long id;
     private String name;
-    private Date creationDate;
+    @Embedded
+    private Metadata metadata;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Major> majors;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

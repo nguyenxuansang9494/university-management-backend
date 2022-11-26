@@ -1,7 +1,6 @@
 package uit.edu.vn.universitymanagement.model;
 
-import java.util.Date;
-
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,8 @@ public class Major {
     @SequenceGenerator(name = "Major_id_seq", allocationSize = 100)
     private Long id;
     private String name;
-    private Date creationDate;
+    @Embedded
+    private Metadata metadata;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Faculty faculty;
 }

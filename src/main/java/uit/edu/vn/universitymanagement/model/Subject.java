@@ -1,7 +1,6 @@
 package uit.edu.vn.universitymanagement.model;
 
-import java.util.Date;
-
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +29,8 @@ public class Subject {
     private Long id;
     private String name;
     private Integer credit;
-    private Date creationDate;
+    @Embedded
+    private Metadata metadata;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Faculty faculty;
 }
