@@ -30,6 +30,7 @@ public class Teacher {
     private Long id;
     @Embedded
     private PersonalInfomation personalInfomation;
+    private Account account;
     @Embedded
     private Metadata metadata;
     @ManyToMany
