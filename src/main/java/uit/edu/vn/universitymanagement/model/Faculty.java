@@ -1,5 +1,6 @@
 package uit.edu.vn.universitymanagement.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,7 +30,7 @@ public class Faculty {
     @SequenceGenerator(name = "Faculty_id_seq", allocationSize = 100)
     private Long id;
     private String name;
-    private String creationDate;
+    private Date creationDate;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Major> majors;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

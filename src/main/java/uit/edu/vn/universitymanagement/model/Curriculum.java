@@ -1,5 +1,6 @@
 package uit.edu.vn.universitymanagement.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ public class Curriculum {
     @SequenceGenerator(name = "Curriculum_id_seq", allocationSize = 100)
     private Long id;
     private String name;
+    private Date creationDate;
     @OneToOne(optional = false)
     private Major major;
     @OneToMany(fetch = FetchType.LAZY)
