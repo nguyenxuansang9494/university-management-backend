@@ -1,13 +1,13 @@
 package uit.edu.vn.universitymanagement.model;
 
-import java.util.Date;
-
-import javax.persistence.Embeddable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Embeddable;
+import javax.persistence.OneToOne;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +17,8 @@ import lombok.Setter;
 public class Metadata {
     private Date creationDate;
     private Date lastModificationDate;
+    @OneToOne
+    private Account creator;
+    @OneToOne
+    private Account lastModifier;
 }

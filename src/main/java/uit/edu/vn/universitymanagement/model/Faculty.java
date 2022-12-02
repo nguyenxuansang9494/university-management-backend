@@ -22,7 +22,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class Faculty {
     @Id
@@ -33,9 +32,12 @@ public class Faculty {
     @Embedded
     private Metadata metadata;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Major> majors;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Subject> subjects;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Teacher> teachers;
 }

@@ -23,7 +23,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class Curriculum {
 
@@ -40,8 +39,10 @@ public class Curriculum {
     private Major major;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mandatory_subjects")
+    @ToString.Exclude
     private List<Subject> mandatorySubjects;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "optional_subjects")
+    @ToString.Exclude
     private List<Subject> optionalSubjects;
 }
