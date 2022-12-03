@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.JwtTokenDto;
 import uit.edu.vn.universitymanagement.dto.LoginDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
-import uit.edu.vn.universitymanagement.util.JwtTokenProvider;
+import uit.edu.vn.universitymanagement.service.JwtTokenService;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,7 +21,7 @@ import uit.edu.vn.universitymanagement.util.JwtTokenProvider;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDto> login(@RequestBody LoginDto loginDto) {
@@ -30,7 +30,7 @@ public class AuthenticationController {
                 loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        JwtTokenDto jwtTokenDto = jwtTokenProvider.provideJwtToken((Account) authentication.getPrincipal());
+        JwtTokenDto jwtTokenDto = jwtTokenService.provideJwtToken((Account) authentication.getPrincipal());
         return ResponseEntity.ok(jwtTokenDto);
     }
 }

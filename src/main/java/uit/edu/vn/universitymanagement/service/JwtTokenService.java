@@ -1,4 +1,4 @@
-package uit.edu.vn.universitymanagement.util;
+package uit.edu.vn.universitymanagement.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import uit.edu.vn.universitymanagement.dto.JwtTokenDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 
@@ -15,9 +15,9 @@ import java.security.Key;
 import java.util.Date;
 
 @RequiredArgsConstructor
-@Component
+@Service
 @Slf4j
-public class JwtTokenProvider {
+public class JwtTokenService {
     @Value("${jwt.secret}")
     private final String secret;
 

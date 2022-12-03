@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uit.edu.vn.universitymanagement.service.CustomUserDetailsService;
-import uit.edu.vn.universitymanagement.util.JwtTokenProvider;
+import uit.edu.vn.universitymanagement.service.JwtTokenService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,14 +21,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         getBearerToken(request).ifPresent(token -> {
-            if (jwtTokenProvider.validateToken(token)) {
-                long accountId = jwtTokenProvider.getAccountId(token);
+            if (jwtTokenService.validateToken(token)) {
+                long accountId = jwtTokenService.getAccountId(token);
                 UserDetails userDetails = customUserDetailsService.loadUserByUserId(accountId);
                 if (userDetails!=null) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
