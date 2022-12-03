@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uit.edu.vn.universitymanagement.model.entity.Account;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;

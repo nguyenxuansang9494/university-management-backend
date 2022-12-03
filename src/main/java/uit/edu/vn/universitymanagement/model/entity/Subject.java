@@ -1,9 +1,10 @@
-package uit.edu.vn.universitymanagement.model;
+package uit.edu.vn.universitymanagement.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,8 +25,8 @@ import java.util.List;
 public class Subject {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Subject_id_seq")
-    @SequenceGenerator(name = "Subject_id_seq", allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
+    @SequenceGenerator(name = "subject_id_seq", allocationSize = 100)
     private Long id;
     private String name;
     private Integer credit;
@@ -34,11 +35,11 @@ public class Subject {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Faculty faculty;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "mandatorySubjects")
-    private List<Curriculum> mandatoryCurriculum;
+    private Set<Curriculum> mandatoryCurriculums;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "optionalSubjects")
-    private List<Curriculum> optionalCurriculum;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Teacher> teachers;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Subject> prerequisiteSubjects;
+    private Set<Curriculum> optionalCurriculums;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subjects")
+    private Set<Teacher> teachers;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "prerequisiteSubjects")
+    private Set<Subject> prerequisiteSubjects;
 }

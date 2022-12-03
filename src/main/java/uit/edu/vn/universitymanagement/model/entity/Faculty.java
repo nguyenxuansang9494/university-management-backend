@@ -1,6 +1,10 @@
-package uit.edu.vn.universitymanagement.model;
+package uit.edu.vn.universitymanagement.model.entity;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -11,12 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,19 +24,16 @@ import lombok.ToString;
 @Entity
 public class Faculty {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Faculty_id_seq")
-    @SequenceGenerator(name = "Faculty_id_seq", allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_id_seq")
+    @SequenceGenerator(name = "faculty_id_seq", allocationSize = 100)
     private Long id;
     private String name;
     @Embedded
     private Metadata metadata;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Major> majors;
+    private Set<Major> majors;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Subject> subjects;
+    private Set<Subject> subjects;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Teacher> teachers;
+    private Set<Teacher> teachers;
 }

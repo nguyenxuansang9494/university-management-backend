@@ -1,5 +1,6 @@
-package uit.edu.vn.universitymanagement.model;
+package uit.edu.vn.universitymanagement.model.entity;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import uit.edu.vn.universitymanagement.model.Metadata;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,9 +23,11 @@ import lombok.ToString;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Account_id_seq")
-    @SequenceGenerator(name = "Account_id_seq", allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
+    @SequenceGenerator(name = "account_id_seq", allocationSize = 100)
     private Long id;
+    @Embedded
+    private Metadata metadata;
     private String username;
     private String password;
 }
