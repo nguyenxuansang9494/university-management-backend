@@ -26,7 +26,7 @@ public class Administrator {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")
     @SequenceGenerator(name = "admin_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

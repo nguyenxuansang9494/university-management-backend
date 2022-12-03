@@ -26,7 +26,7 @@ public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_id_seq")
     @SequenceGenerator(name = "faculty_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     private String name;
     @Embedded
     private Metadata metadata;

@@ -28,7 +28,7 @@ public class Curriculum {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "curriculum_id_seq")
     @SequenceGenerator(name = "curriculum_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     private String name;
     @Embedded
     private Metadata metadata;

@@ -28,7 +28,7 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
     @SequenceGenerator(name = "teacher_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

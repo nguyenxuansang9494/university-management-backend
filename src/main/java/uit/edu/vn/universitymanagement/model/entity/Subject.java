@@ -27,7 +27,7 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
     @SequenceGenerator(name = "subject_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     private String name;
     private Integer credit;
     @Embedded

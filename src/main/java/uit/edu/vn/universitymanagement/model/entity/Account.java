@@ -34,7 +34,7 @@ public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
     @SequenceGenerator(name = "account_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     @Embedded
     private Metadata metadata;
     private String username;

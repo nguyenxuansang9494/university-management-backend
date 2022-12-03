@@ -32,7 +32,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
     @SequenceGenerator(name = "student_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

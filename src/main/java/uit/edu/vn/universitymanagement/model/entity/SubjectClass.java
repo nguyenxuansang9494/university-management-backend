@@ -30,7 +30,7 @@ public class SubjectClass {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_id_seq")
     @SequenceGenerator(name = "subject_class_id_seq", allocationSize = 100)
-    private Long id;
+    private long id;
     @Embedded
     private Metadata metadata;
     @OneToOne
