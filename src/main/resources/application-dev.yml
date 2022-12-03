@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=university_management;
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: Password123@
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: sql_server
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

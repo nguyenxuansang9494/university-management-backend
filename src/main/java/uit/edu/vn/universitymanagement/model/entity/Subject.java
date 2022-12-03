@@ -40,6 +40,6 @@ public class Subject {
     private Set<Curriculum> optionalCurriculums;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subjects")
     private Set<Teacher> teachers;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "prerequisiteSubjects")
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subject> prerequisiteSubjects;
 }

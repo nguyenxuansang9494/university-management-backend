@@ -36,8 +36,8 @@ public class Curriculum {
     private Term firstAppliedTerm;
     @ManyToOne(optional = false)
     private Major major;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "mandatoryCurriculums")
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subject> mandatorySubjects;
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "optionalCurriculums")
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subject> optionalSubjects;
 }

@@ -35,9 +35,9 @@ public class Teacher {
     private Account account;
     @Embedded
     private Metadata metadata;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "teachers")
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subject> subjects;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "teachers")
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<SubjectClass> subjectClasses;
     @ManyToOne
     private Faculty faculty;
