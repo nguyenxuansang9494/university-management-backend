@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -26,25 +25,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        getBearerToken(request).ifPresent(token -> {
-            if (jwtTokenService.validateToken(token)) {
-                long accountId = jwtTokenService.getAccountId(token);
-                UserDetails userDetails = customUserDetailsService.loadUserByUserId(accountId);
-                if (userDetails!=null) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
+        String token = getBearerToken(request);
+        if (StringUtils.hasText(token) && jwtTokenService.validateToken(token)) {
+            long accountId = jwtTokenService.getAccountId(token);
+            UserDetails userDetails = customUserDetailsService.loadUserByUserId(accountId);
+            if (userDetails!=null) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-        });
+        }
         filterChain.doFilter(request, response);
     }
 
-    private Optional<String> getBearerToken(HttpServletRequest request) {
+    private String getBearerToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            return Optional.of(token.substring(7));
+            return token.substring(7);
         }
-        return Optional.empty();
+        return null;
     }
 }

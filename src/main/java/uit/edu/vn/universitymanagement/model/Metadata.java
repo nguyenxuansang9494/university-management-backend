@@ -8,6 +8,7 @@ import uit.edu.vn.universitymanagement.model.entity.Account;
 
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -15,7 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Embeddable
-public class Metadata {
+public class Metadata implements Serializable {
     private Date creationDate;
     private Date lastModificationDate;
     @OneToOne

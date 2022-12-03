@@ -14,5 +14,5 @@ spring:
         format_sql: true
 
 jwt:
-  secret: SUPAHERO
+  secret: THIS_IS_MY_VERY_LONG_AND_POWERFUL_SECRET_1238912_#&$#*H@*#DSAD
   duration: 3600000

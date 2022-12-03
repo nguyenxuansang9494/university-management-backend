@@ -16,6 +16,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,9 +38,11 @@ public class Account implements UserDetails {
     private long id;
     @Embedded
     private Metadata metadata;
+    @Column(unique = true, nullable = false, length = 20)
     private String username;
+    @Column(nullable = false)
     private String password;
-    @ElementCollection(targetClass = SimpleAuthority.class)
+    @ElementCollection(targetClass = SimpleAuthority.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Set<SimpleAuthority> authoritySet;
