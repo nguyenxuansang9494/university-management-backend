@@ -19,11 +19,11 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @Entity
 public class Subject {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
     @SequenceGenerator(name = "subject_id_seq", allocationSize = 100)
@@ -32,7 +32,7 @@ public class Subject {
     private Integer credit;
     @Embedded
     private Metadata metadata;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Faculty faculty;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "mandatorySubjects")
     private Set<Curriculum> mandatoryCurriculums;
