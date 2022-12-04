@@ -26,6 +26,7 @@ public class Major {
     @SequenceGenerator(name = "major_id_seq", allocationSize = 100)
     private long id;
     private String name;
+    private String codeName;
     @Embedded
     private Metadata metadata;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

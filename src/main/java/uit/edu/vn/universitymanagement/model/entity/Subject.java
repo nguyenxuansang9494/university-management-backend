@@ -29,6 +29,7 @@ public class Subject {
     @SequenceGenerator(name = "subject_id_seq", allocationSize = 100)
     private long id;
     private String name;
+    private String codeName;
     private Integer credit;
     @Embedded
     private Metadata metadata;

@@ -30,6 +30,7 @@ public class Curriculum {
     @SequenceGenerator(name = "curriculum_id_seq", allocationSize = 100)
     private long id;
     private String name;
+    private String codeName;
     @Embedded
     private Metadata metadata;
     @Embedded

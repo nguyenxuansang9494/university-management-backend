@@ -28,6 +28,7 @@ public class Faculty {
     @SequenceGenerator(name = "faculty_id_seq", allocationSize = 100)
     private long id;
     private String name;
+    private String codeName;
     @Embedded
     private Metadata metadata;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
