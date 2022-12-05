@@ -28,6 +28,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,6 +51,6 @@ public class WebSecurityConfig {
     @PostConstruct
     public void setUpAuthenticationManagerBuilder() throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
+                .passwordEncoder(bCryptPasswordEncoder);
     }
 }

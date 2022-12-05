@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uit.edu.vn.universitymanagement.model.ManagedEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class SubjectClassResult {
+public class SubjectClassResult implements ManagedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_result_id_seq")
     @SequenceGenerator(name = "subject_class_result_id_seq", allocationSize = 100)

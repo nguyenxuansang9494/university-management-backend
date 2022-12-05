@@ -7,8 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uit.edu.vn.universitymanagement.model.ManagedEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
-import uit.edu.vn.universitymanagement.model.SimpleAuthority;
+import uit.edu.vn.universitymanagement.model.Role;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -30,7 +31,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
-public class Account implements UserDetails {
+public class Account implements UserDetails, ManagedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
@@ -42,10 +43,10 @@ public class Account implements UserDetails {
     private String username;
     @Column(nullable = false)
     private String password;
-    @ElementCollection(targetClass = SimpleAuthority.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Set<SimpleAuthority> authoritySet;
+    private Set<Role> roles;
     private boolean isAccountExpired;
     private boolean isAccountLock;
     private boolean isCredentialExpired;
@@ -53,7 +54,7 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authoritySet;
+        return roles;
     }
 
     @Override

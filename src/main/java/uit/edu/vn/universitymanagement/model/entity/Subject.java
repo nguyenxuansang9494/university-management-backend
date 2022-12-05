@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uit.edu.vn.universitymanagement.model.ManagedEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.Embedded;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-public class Subject {
+public class Subject implements ManagedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_id_seq")
