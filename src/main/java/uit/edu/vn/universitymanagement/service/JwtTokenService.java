@@ -11,6 +11,7 @@ import uit.edu.vn.universitymanagement.model.entity.Account;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class JwtTokenService {
 
     public JwtTokenDto provideJwtToken(Account account) {
         Date now = new Date();
-        Date expireAt = new Date(now.getTime() + duration);
+        Date expireAt = Date.from(now.toInstant().plus(duration, ChronoUnit.SECONDS));
         String token = "Bearer " + Jwts.builder()
                 .setExpiration(expireAt)
                 .setIssuedAt(now)

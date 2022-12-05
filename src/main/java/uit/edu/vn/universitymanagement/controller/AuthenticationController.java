@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.JwtTokenDto;
 import uit.edu.vn.universitymanagement.dto.LoginDto;
@@ -17,7 +16,6 @@ import uit.edu.vn.universitymanagement.service.JwtTokenService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/authentication")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;

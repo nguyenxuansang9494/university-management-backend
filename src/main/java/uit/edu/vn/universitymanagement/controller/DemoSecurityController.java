@@ -11,7 +11,7 @@ import java.security.Principal;
 @RequestMapping("/demo")
 public class DemoSecurityController {
 
-    @GetMapping("/hello-world")
+    @GetMapping("/hello")
     public ResponseEntity<String> helloWorld(Principal principal) {
         return ResponseEntity.ok("Hello, " + principal.getName());
     }
