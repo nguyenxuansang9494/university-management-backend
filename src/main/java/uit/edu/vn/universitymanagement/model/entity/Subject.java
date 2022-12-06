@@ -36,12 +36,6 @@ public class Subject implements ManagedModel {
     private Metadata metadata;
     @ManyToOne(optional = false)
     private Faculty faculty;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "mandatorySubjects")
-    private Set<Curriculum> mandatoryCurriculums;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "optionalSubjects")
-    private Set<Curriculum> optionalCurriculums;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subjects")
-    private Set<Teacher> teachers;
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subject> prerequisiteSubjects;
 }

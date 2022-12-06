@@ -17,7 +17,7 @@ public final class AuthenticationUtils {
         throw new IllegalArgumentException("principal is not an account");
     }
 
-    public static boolean allowAllToReadOnlyAboveModeratorToWrite(Authentication authentication, ActionType actionType) {
+    public static boolean allowAllToReadButOnlyModeratorAboveToWrite(Authentication authentication, ActionType actionType) {
         Account account = AuthenticationUtils.getAccount(authentication);
         if (actionType.ordinal() > ActionType.READ.ordinal()) {
             return account.getAuthorities().stream().noneMatch(e -> Role.MODERATOR.equals(e) || Role.ADMINISTRATOR.equals(e));

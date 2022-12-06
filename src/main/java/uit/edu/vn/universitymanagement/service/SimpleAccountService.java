@@ -4,13 +4,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.model.entity.Account;
-import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
+import uit.edu.vn.universitymanagement.repository.AccountRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
 
 
 @Service
-public class SimpleAccountService extends AbstractCrudService<Account> {
-    public SimpleAccountService(CommonJpaRepository<Account, Long> repository) {
+public class SimpleAccountService extends AbstractCrudService<Account, AccountRepository> {
+    public SimpleAccountService(AccountRepository repository) {
         super(repository);
     }
 

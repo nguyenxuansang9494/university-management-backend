@@ -32,8 +32,9 @@ public final class MapperUtils {
     }
 
     public static <S, T> Page<T> mapPage(Page<S> source, Class<T> targetClass) {
+
         return new PageImpl<>(source.get()
                 .map(element -> modelMapper.map(element, targetClass))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()), source.getPageable(), source.getTotalElements());
     }
 }

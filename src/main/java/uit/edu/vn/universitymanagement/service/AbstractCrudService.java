@@ -20,8 +20,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public abstract class AbstractCrudService<T extends ManagedModel> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
-    final CommonJpaRepository<T, Long> repository;
+public abstract class AbstractCrudService<T extends ManagedModel, U extends CommonJpaRepository<T, Long>> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
+    final U repository;
 
     @Override
     public boolean notAuthorize(Authentication authentication, ActionType actionType, List<T> objects) {
