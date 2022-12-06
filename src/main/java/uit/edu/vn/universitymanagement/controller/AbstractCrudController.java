@@ -2,20 +2,18 @@ package uit.edu.vn.universitymanagement.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import uit.edu.vn.universitymanagement.dto.QueryByIdDto;
-import uit.edu.vn.universitymanagement.dto.RequestDto;
-import uit.edu.vn.universitymanagement.dto.ResponseDto;
 import uit.edu.vn.universitymanagement.model.ManagedEntity;
 import uit.edu.vn.universitymanagement.service.AbstractCrudService;
+import uit.edu.vn.universitymanagement.util.MapperUtils;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class AbstractCrudController<T extends ManagedEntity, U extends RequestDto, V extends ResponseDto> {
+public abstract class AbstractCrudController<T extends ManagedEntity, U, V> {
     private final ModelMapper modelMapper;
     private final AbstractCrudService<T> service;
     private final Class<T> tClass;
@@ -47,31 +45,27 @@ public abstract class AbstractCrudController<T extends ManagedEntity, U extends 
     }
 
     public ResponseEntity<List<V>> create(Authentication authentication, List<U> reqDtos) {
-        List<T> objects = modelMapper.map(reqDtos, new TypeToken<List<T>>() {
-        }.getType());
+        List<T> objects = MapperUtils.mapList(reqDtos, tClass);
         List<T> savedObjects = service.create(authentication, objects);
-        List<V> rspDtos = modelMapper.map(savedObjects, new TypeToken<V>() {
-        }.getType());
+        List<V> rspDtos = MapperUtils.mapList(savedObjects, rspDtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
     public ResponseEntity<Object> read(Authentication authentication, QueryByIdDto queryByIdDto) {
         if (!queryByIdDto.isPaged()) {
             List<T> objects = service.read(authentication, queryByIdDto.getIds());
-            List<V> rspDtos = modelMapper.map(objects, new TypeToken<List<V>>() {
-            }.getType());
+            List<V> rspDtos = MapperUtils.mapList(objects, rspDtoClass);
             return ResponseEntity.ok(rspDtos);
         }
         Page<T> objects = service.read(authentication, queryByIdDto.getIds(), queryByIdDto.getPage(), queryByIdDto.getSize());
-        Page<V> rspDtos = modelMapper.map(objects, new TypeToken<Page<V>>() {
-        }.getType());
+        Page<V> rspDtos = MapperUtils.mapPage(objects, rspDtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
     public ResponseEntity<List<V>> update(Authentication authentication, List<U> reqDtos) {
-        List<T> objects = modelMapper.map(reqDtos, new TypeToken<List<T>>(){}.getType());
+        List<T> objects = MapperUtils.mapList(reqDtos, tClass);
         List<T> updatedObjects = service.update(authentication, objects);
-        List<V> rspDto = modelMapper.map(updatedObjects, new TypeToken<List<V>>(){}.getType());
+        List<V> rspDto = MapperUtils.mapList(updatedObjects, rspDtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
