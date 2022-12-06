@@ -136,7 +136,7 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void deleteByIdIn(Authentication authentication, List<Long> ids) {
+    public void delete(Authentication authentication, List<Long> ids) {
         List<T> objects = repository.findAllByIdIn(ids);
         if (objects.size() < ids.size()) {
             throw new ResourceNotFoundException();

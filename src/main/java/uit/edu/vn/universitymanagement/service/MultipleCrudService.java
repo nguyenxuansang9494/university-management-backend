@@ -15,5 +15,5 @@ public interface MultipleCrudService<T extends ManagedEntity> {
 
     List<T> update(Authentication authentication, List<T> objects);
 
-    void deleteByIdIn(Authentication authentication, List<Long> ids);
+    void delete(Authentication authentication, List<Long> ids);
 }
