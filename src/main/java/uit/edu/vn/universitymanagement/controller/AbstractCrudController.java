@@ -18,9 +18,8 @@ import java.util.List;
 public abstract class AbstractCrudController<T extends ManagedEntity, U extends RequestDto, V extends ResponseDto> {
     private final ModelMapper modelMapper;
     private final AbstractCrudService<T> service;
-    private Class<T> tClass;
-    private Class<U> reqDtoClass;
-    private Class<V> rspDtoClass;
+    private final Class<T> tClass;
+    private final Class<V> rspDtoClass;
 
     public ResponseEntity<V> create(Authentication authentication, U reqDto) {
         T object = modelMapper.map(reqDto, tClass);
