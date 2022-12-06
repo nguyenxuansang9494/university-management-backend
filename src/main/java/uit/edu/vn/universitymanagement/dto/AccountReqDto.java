@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AccountReqDto implements RequestDto {
+public class AccountReqDto {
     private String username;
     private String password;
     private Set<Role> roles;

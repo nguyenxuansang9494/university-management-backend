@@ -47,9 +47,13 @@ public class Account implements UserDetails, ManagedEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Set<Role> roles;
+    @Column(nullable = false)
     private boolean isAccountExpired;
+    @Column(nullable = false)
     private boolean isAccountLock;
+    @Column(nullable = false)
     private boolean isCredentialExpired;
+    @Column(nullable = false)
     private boolean isEnable;
 
     @Override

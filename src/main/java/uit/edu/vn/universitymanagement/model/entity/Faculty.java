@@ -7,15 +7,7 @@ import lombok.Setter;
 import uit.edu.vn.universitymanagement.model.ManagedEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -28,7 +20,9 @@ public class Faculty implements ManagedEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_id_seq")
     @SequenceGenerator(name = "faculty_id_seq", allocationSize = 100)
     private long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String codeName;
     @Embedded
     private Metadata metadata;

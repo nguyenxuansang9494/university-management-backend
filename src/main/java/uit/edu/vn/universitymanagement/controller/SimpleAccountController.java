@@ -14,8 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
-public class AccountController extends AbstractCrudController<Account, AccountReqDto, AccountRspDto> {
-    public AccountController(ModelMapper modelMapper, AbstractCrudService<Account> service) {
+public class SimpleAccountController extends AbstractCrudController<Account, AccountReqDto, AccountRspDto> {
+    public SimpleAccountController(ModelMapper modelMapper, AbstractCrudService<Account> service) {
         super(modelMapper, service, Account.class, AccountRspDto.class);
     }
 

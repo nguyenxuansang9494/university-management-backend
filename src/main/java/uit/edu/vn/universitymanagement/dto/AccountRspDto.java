@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRspDto implements ResponseDto {
+public class AccountRspDto {
     private long id;
     private String username;
     private MetadataDto metadata;
