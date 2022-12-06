@@ -69,7 +69,8 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void delete(Authentication authentication, long id) {
-        T object = repository.deleteById(id);
+        T object = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        repository.deleteById(id);
         if (notAuthorize(authentication, ActionType.WRITE, object)) {
             throw new PermissionDeniedException();
         }
@@ -119,6 +120,9 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
         }
         List<Long> ids = objects.stream().map(ManagedEntity::getId).collect(Collectors.toList());
         List<T> savedObjects = repository.findAllByIdIn(ids);
+        if (savedObjects.size() != objects.size()) {
+            throw new ResourceNotFoundException();
+        }
         savedObjects.sort(Comparator.comparingLong(ManagedEntity::getId));
         objects.sort(Comparator.comparingLong(ManagedEntity::getId));
         for (int i = 0; i < savedObjects.size(); i++) {
@@ -131,8 +135,13 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public void deleteByIdIn(Authentication authentication, List<Long> ids) {
-        List<T> objects = repository.deleteByIdIn(ids);
+        List<T> objects = repository.findAllByIdIn(ids);
+        if (objects.size() < ids.size()) {
+            throw new ResourceNotFoundException();
+        }
+        repository.deleteByIdIn(ids);
         if (notAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }

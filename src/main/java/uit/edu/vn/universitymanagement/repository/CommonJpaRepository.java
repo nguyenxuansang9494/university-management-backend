@@ -8,9 +8,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.List;
 
 @NoRepositoryBean
-public interface CommonJpaRepository<T, Long> extends JpaRepository<T, Long> {
-    Page<T> findAllByIdIn(List<Long> ids, Pageable pageable);
-    List<T> findAllByIdIn(List<Long> ids);
-    List<T> deleteByIdIn(List<Long> ids);
-    T deleteById(long id);
+public interface CommonJpaRepository<T, L> extends JpaRepository<T, L> {
+    Page<T> findAllByIdIn(List<L> ids, Pageable pageable);
+    List<T> findAllByIdIn(List<L> ids);
+    void deleteByIdIn(List<L> ids);
 }

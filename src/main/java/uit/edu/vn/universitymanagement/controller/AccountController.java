@@ -4,12 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uit.edu.vn.universitymanagement.dto.AccountReqDto;
 import uit.edu.vn.universitymanagement.dto.AccountRspDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
@@ -25,8 +20,8 @@ public class AccountController {
     @PutMapping
     public ResponseEntity<AccountRspDto> create(Authentication authentication, @RequestBody  AccountReqDto accountReqDto) {
         Account account = ReqDtoEntityMapper.map(accountReqDto);
-        account = simpleAccountService.create(authentication, account);
-        AccountRspDto accountRspDto = modelMapper.map(account, AccountRspDto.class);
+        Account savedAccount = simpleAccountService.create(authentication, account);
+        AccountRspDto accountRspDto = modelMapper.map(savedAccount, AccountRspDto.class);
         return ResponseEntity.ok(accountRspDto);
     }
     @GetMapping("/{id}")
@@ -36,4 +31,9 @@ public class AccountController {
         return ResponseEntity.ok(accountRspDto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(Authentication authentication, @PathVariable("id") long id) {
+        simpleAccountService.delete(authentication, id);
+        return ResponseEntity.ok().build();
+    }
 }

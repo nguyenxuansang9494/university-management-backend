@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 public class ModelMapperConfig {
     private final ModelMapper modelMapper;
     @PostConstruct
-    void setupModelMapper() {
+    void setupModelMapperForMetadata() {
         TypeMap<Metadata, MetadataDto> typeMap = modelMapper.createTypeMap(Metadata.class, MetadataDto.class);
         typeMap.addMappings(mapper -> mapper.map(src -> src.getCreator().getUsername(), MetadataDto::setCreatorUsername));
         typeMap.addMappings(mapper -> mapper.map(src -> src.getCreator().getId(), MetadataDto::setCreatorId));
