@@ -5,6 +5,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import uit.edu.vn.universitymanagement.dto.QueryByIdDto;
 import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.service.AbstractCrudService;
@@ -19,39 +26,45 @@ public abstract class AbstractCrudController<T extends ManagedModel, U> {
     private final Class<T> tClass;
     private final Class<U> dtoClass;
 
-    public ResponseEntity<U> create(Authentication authentication, U reqDto) {
+    @PutMapping
+    public ResponseEntity<U> create(Authentication authentication, @RequestBody U reqDto) {
         T object = modelMapper.map(reqDto, tClass);
         T savedObject = service.create(authentication, object);
         U rspDto = modelMapper.map(savedObject, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
-    public ResponseEntity<U> read(Authentication authentication, long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<U> read(Authentication authentication, @PathVariable("id") long id) {
         T object = service.read(authentication, id);
         U rspDto = modelMapper.map(object, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
-    public ResponseEntity<U> update(Authentication authentication, U reqDto) {
+    @PatchMapping
+    public ResponseEntity<U> update(Authentication authentication, @RequestBody U reqDto) {
         T object = modelMapper.map(reqDto, tClass);
         T updatedObject = service.update(authentication, object);
         U rspDtos = modelMapper.map(updatedObject, dtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
-    public ResponseEntity<Void> delete(Authentication authentication, long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(Authentication authentication, @PathVariable("id") long id) {
         service.delete(authentication, id);
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<List<U>> create(Authentication authentication, List<U> reqDtos) {
+    @PutMapping("/batch")
+    public ResponseEntity<List<U>> create(Authentication authentication, @RequestBody List<U> reqDtos) {
         List<T> objects = MapperUtils.mapList(reqDtos, tClass);
         List<T> savedObjects = service.create(authentication, objects);
         List<U> rspDtos = MapperUtils.mapList(savedObjects, dtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
-    public ResponseEntity<Object> read(Authentication authentication, QueryByIdDto queryByIdDto) {
+    @PostMapping("/batch")
+    public ResponseEntity<Object> read(Authentication authentication, @RequestBody QueryByIdDto queryByIdDto) {
         if (!queryByIdDto.isPaged()) {
             List<T> objects = service.read(authentication, queryByIdDto.getIds());
             List<U> rspDtos = MapperUtils.mapList(objects, dtoClass);
@@ -62,14 +75,16 @@ public abstract class AbstractCrudController<T extends ManagedModel, U> {
         return ResponseEntity.ok(rspDtos);
     }
 
-    public ResponseEntity<List<U>> update(Authentication authentication, List<U> reqDtos) {
+    @PatchMapping("/batch")
+    public ResponseEntity<List<U>> update(Authentication authentication, @RequestBody List<U> reqDtos) {
         List<T> objects = MapperUtils.mapList(reqDtos, tClass);
         List<T> updatedObjects = service.update(authentication, objects);
         List<U> rspDto = MapperUtils.mapList(updatedObjects, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
-    public ResponseEntity<Void> delete(Authentication authentication, List<Long> ids) {
+    @DeleteMapping("/batch")
+    public ResponseEntity<Void> delete(Authentication authentication, @RequestBody List<Long> ids) {
         service.delete(authentication, ids);
         return ResponseEntity.ok().build();
     }
