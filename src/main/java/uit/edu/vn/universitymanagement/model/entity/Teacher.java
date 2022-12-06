@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uit.edu.vn.universitymanagement.model.ManagedEntity;
+import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.PersonalInfomation;
 
@@ -25,7 +25,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Teacher implements ManagedEntity {
+public class Teacher implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
     @SequenceGenerator(name = "teacher_id_seq", allocationSize = 100)

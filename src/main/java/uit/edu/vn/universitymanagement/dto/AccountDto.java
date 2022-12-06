@@ -12,9 +12,10 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRspDto {
+public class AccountDto {
     private long id;
     private String username;
+    private String password;
     private MetadataDto metadata;
     private Set<Role> roles;
     private boolean isAccountExpired;

@@ -4,8 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import uit.edu.vn.universitymanagement.dto.AccountReqDto;
-import uit.edu.vn.universitymanagement.dto.AccountRspDto;
+import uit.edu.vn.universitymanagement.dto.AccountDto;
 import uit.edu.vn.universitymanagement.dto.QueryByIdDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 import uit.edu.vn.universitymanagement.service.AbstractCrudService;
@@ -14,26 +13,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
-public class SimpleAccountController extends AbstractCrudController<Account, AccountReqDto, AccountRspDto> {
+public class SimpleAccountController extends AbstractCrudController<Account, AccountDto> {
     public SimpleAccountController(ModelMapper modelMapper, AbstractCrudService<Account> service) {
-        super(modelMapper, service, Account.class, AccountRspDto.class);
+        super(modelMapper, service, Account.class, AccountDto.class);
     }
 
     @Override
     @PutMapping
-    public ResponseEntity<AccountRspDto> create(Authentication authentication, @RequestBody AccountReqDto reqDto) {
+    public ResponseEntity<AccountDto> create(Authentication authentication, @RequestBody AccountDto reqDto) {
         return super.create(authentication, reqDto);
     }
 
     @Override
     @GetMapping("/{id}")
-    public ResponseEntity<AccountRspDto> read(Authentication authentication, @PathVariable("id") long id) {
+    public ResponseEntity<AccountDto> read(Authentication authentication, @PathVariable("id") long id) {
         return super.read(authentication, id);
     }
 
     @Override
     @PatchMapping
-    public ResponseEntity<AccountRspDto> update(Authentication authentication, @RequestBody AccountReqDto reqDto) {
+    public ResponseEntity<AccountDto> update(Authentication authentication, @RequestBody AccountDto reqDto) {
         return super.update(authentication, reqDto);
     }
 
@@ -45,7 +44,7 @@ public class SimpleAccountController extends AbstractCrudController<Account, Acc
 
     @Override
     @PutMapping("/batch")
-    public ResponseEntity<List<AccountRspDto>> create(Authentication authentication, List<AccountReqDto> reqDtos) {
+    public ResponseEntity<List<AccountDto>> create(Authentication authentication, List<AccountDto> reqDtos) {
         return super.create(authentication, reqDtos);
     }
 
@@ -57,7 +56,7 @@ public class SimpleAccountController extends AbstractCrudController<Account, Acc
 
     @Override
     @PatchMapping("/batch")
-    public ResponseEntity<List<AccountRspDto>> update(Authentication authentication, @RequestBody List<AccountReqDto> reqDtos) {
+    public ResponseEntity<List<AccountDto>> update(Authentication authentication, @RequestBody List<AccountDto> reqDtos) {
         return super.update(authentication, reqDtos);
     }
 

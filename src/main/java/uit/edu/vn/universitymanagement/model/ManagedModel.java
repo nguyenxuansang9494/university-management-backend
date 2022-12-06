@@ -1,6 +1,6 @@
 package uit.edu.vn.universitymanagement.model;
 
-public interface ManagedEntity {
+public interface ManagedModel {
     long getId();
     Metadata getMetadata();
     void setMetadata(Metadata metadata);

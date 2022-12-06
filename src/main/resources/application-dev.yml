@@ -12,6 +12,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+server:
+  port: 8090
 
 jwt:
   secret: THIS_IS_MY_VERY_LONG_AND_POWERFUL_SECRET_1238912_#&$#*H@*#DSAD

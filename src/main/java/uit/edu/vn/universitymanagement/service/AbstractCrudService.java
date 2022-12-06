@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
-import uit.edu.vn.universitymanagement.model.ManagedEntity;
+import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public abstract class AbstractCrudService<T extends ManagedEntity> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
+public abstract class AbstractCrudService<T extends ManagedModel> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
     final CommonJpaRepository<T, Long> repository;
 
     @Override
@@ -125,13 +125,13 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
         if (notAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
-        List<Long> ids = objects.stream().map(ManagedEntity::getId).collect(Collectors.toList());
+        List<Long> ids = objects.stream().map(ManagedModel::getId).collect(Collectors.toList());
         List<T> savedObjects = repository.findAllByIdIn(ids);
         if (savedObjects.size() != objects.size()) {
             throw new ResourceNotFoundException();
         }
-        savedObjects.sort(Comparator.comparingLong(ManagedEntity::getId));
-        objects.sort(Comparator.comparingLong(ManagedEntity::getId));
+        savedObjects.sort(Comparator.comparingLong(ManagedModel::getId));
+        objects.sort(Comparator.comparingLong(ManagedModel::getId));
         for (int i = 0; i < savedObjects.size(); i++) {
             objects.get(i).setMetadata(new Metadata());
             objects.get(i).getMetadata().setCreator(savedObjects.get(i).getMetadata().getCreator());

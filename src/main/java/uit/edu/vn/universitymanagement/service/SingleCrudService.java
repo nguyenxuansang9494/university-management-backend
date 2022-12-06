@@ -1,9 +1,9 @@
 package uit.edu.vn.universitymanagement.service;
 
 import org.springframework.security.core.Authentication;
-import uit.edu.vn.universitymanagement.model.ManagedEntity;
+import uit.edu.vn.universitymanagement.model.ManagedModel;
 
-public interface SingleCrudService<T extends ManagedEntity> {
+public interface SingleCrudService<T extends ManagedModel> {
     T create(Authentication authentication, T object);
 
     T read(Authentication authentication, long id);

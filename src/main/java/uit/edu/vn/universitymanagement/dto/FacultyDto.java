@@ -9,8 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MajorReqDto {
-    private long facultyId;
+public class FacultyDto {
+    private long id;
     private String name;
     private String codeName;
+    private MetadataDto metadata;
 }

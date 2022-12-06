@@ -2,11 +2,11 @@ package uit.edu.vn.universitymanagement.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
-import uit.edu.vn.universitymanagement.model.ManagedEntity;
+import uit.edu.vn.universitymanagement.model.ManagedModel;
 
 import java.util.List;
 
-public interface MultipleCrudService<T extends ManagedEntity> {
+public interface MultipleCrudService<T extends ManagedModel> {
     List<T> create(Authentication authentication, List<T> objects);
 
     Page<T> read(Authentication authentication, List<Long> ids, int page, int size);

@@ -9,11 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MajorRspDto {
+public class MajorDto {
     private long id;
     private String name;
     private String codeName;
     private MetadataDto metadata;
-    private String facultyName;
-    private String getFacultyId;
+    private FacultyDto faculty;
 }
