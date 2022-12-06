@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
 import uit.edu.vn.universitymanagement.model.ManagedEntity;
+import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
 
@@ -59,6 +60,7 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
         }
         Optional<T> optionalT = repository.findById(object.getId());
         T savedObject = optionalT.orElseThrow(ResourceNotFoundException::new);
+        object.setMetadata(new Metadata());
         object.getMetadata().setCreator(savedObject.getMetadata().getCreator());
         object.getMetadata().setCreatedAt(savedObject.getMetadata().getCreatedAt());
         object.getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));
@@ -126,6 +128,7 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
         savedObjects.sort(Comparator.comparingLong(ManagedEntity::getId));
         objects.sort(Comparator.comparingLong(ManagedEntity::getId));
         for (int i = 0; i < savedObjects.size(); i++) {
+            objects.get(i).setMetadata(new Metadata());
             objects.get(i).getMetadata().setCreator(savedObjects.get(i).getMetadata().getCreator());
             objects.get(i).getMetadata().setCreatedAt(savedObjects.get(i).getMetadata().getCreatedAt());
             objects.get(i).getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));

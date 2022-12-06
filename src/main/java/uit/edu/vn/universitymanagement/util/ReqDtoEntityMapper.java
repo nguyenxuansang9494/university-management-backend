@@ -2,7 +2,6 @@ package uit.edu.vn.universitymanagement.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import uit.edu.vn.universitymanagement.dto.AccountReqDto;
-import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 
 public final class ReqDtoEntityMapper {
@@ -18,7 +17,6 @@ public final class ReqDtoEntityMapper {
         account.setPassword(bCryptPasswordEncoder.encode(accountReqDto.getPassword()));
         account.setRoles(accountReqDto.getRoles());
         account.setEnable(accountReqDto.isEnable());
-        account.setMetadata(new Metadata());
         return account;
     }
 }
