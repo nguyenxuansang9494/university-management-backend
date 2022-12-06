@@ -1,11 +1,11 @@
-package uit.edu.vn.universitymanagement.model;
+package uit.edu.vn.universitymanagement.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class SearchParam {
+public class SearchParamDto {
     private final String key;
     private final String value;
 

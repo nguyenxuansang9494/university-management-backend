@@ -34,6 +34,7 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
         if (notAuthorize(authentication, ActionType.WRITE, object)) {
             throw new PermissionDeniedException();
         }
+        object.setMetadata(new Metadata());
         object.getMetadata().setCreator(AuthenticationUtils.getAccount(authentication));
         object.getMetadata().setCreatedAt(new Date());
         object.getMetadata().setLastModifier(null);
@@ -82,6 +83,7 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
     @Transactional(rollbackFor = {Exception.class})
     public List<T> create(Authentication authentication, List<T> objects) {
         objects.forEach(obj -> {
+            obj.setMetadata(new Metadata());
             obj.getMetadata().setCreator(AuthenticationUtils.getAccount(authentication));
             obj.getMetadata().setCreatedAt(new Date());
             obj.getMetadata().setLastModifier(null);
@@ -98,6 +100,9 @@ public abstract class AbstractCrudService<T extends ManagedEntity> implements Si
     public Page<T> read(Authentication authentication, List<Long> ids, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<T> objects = repository.findAllByIdIn(ids, pageable);
+        if (ids.isEmpty()) {
+            objects = repository.findAll(pageable);
+        }
         if (notAuthorize(authentication, ActionType.READ, objects.getContent())) {
             throw new PermissionDeniedException();
         }
