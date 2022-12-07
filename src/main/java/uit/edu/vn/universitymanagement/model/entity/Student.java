@@ -30,7 +30,7 @@ public class Student implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
     @SequenceGenerator(name = "student_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

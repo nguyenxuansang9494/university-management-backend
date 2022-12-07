@@ -10,6 +10,6 @@ import java.util.List;
 public class QueryByIdDto {
     private final List<Long> ids;
     private final boolean isPaged;
-    private final int page;
-    private final int size;
+    private final Integer page;
+    private final Integer size;
 }

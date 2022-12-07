@@ -15,6 +15,6 @@ import lombok.ToString;
 @ToString
 @Embeddable
 public class Term {
-    private int year;
+    private Integer year;
     private TermType termType;
 }

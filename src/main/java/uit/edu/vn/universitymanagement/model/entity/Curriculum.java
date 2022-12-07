@@ -26,7 +26,7 @@ public class Curriculum implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "curriculum_id_seq")
     @SequenceGenerator(name = "curriculum_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     private String name;
     private String codeName;
     @Embedded

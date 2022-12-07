@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface Authorizer<T> {
     boolean authorize(Authentication authentication, ActionType actionType, T object);
-    boolean authorize(Authentication authentication, ActionType actionType, List<T> objects);
+    boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects);
 
     static boolean allowAllToReadButOnlyCertainRoleAboveToWrite(Authentication authentication, ActionType actionType, Role role) {
         Account account = AuthenticationUtils.getAccount(authentication);

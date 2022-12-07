@@ -1,7 +1,6 @@
 package uit.edu.vn.universitymanagement.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,7 @@ import uit.edu.vn.universitymanagement.dto.QueryByIdDto;
 import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.service.AbstractCrudService;
-import uit.edu.vn.universitymanagement.util.MapperUtils;
+import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 
 import java.util.List;
 
@@ -25,45 +24,45 @@ public abstract class AbstractCrudController<T extends ManagedModel, U, V extend
     // T is the entity class, U is the dto class, v is the service class, and w is the repository class. We need 4 type parameters so that we can specify exactly
     // service type that we want to use in the child controller classes, which help us not have to cast an abstract generic service to a specific one before
     // invoking its method
-    final ModelMapper modelMapper;
+    final ModelMapperWrapper modelMapperWrapper;
     final V service;
     private final Class<T> tClass;
     private final Class<U> dtoClass;
 
     @PutMapping
     public ResponseEntity<U> create(Authentication authentication, @RequestBody U reqDto) {
-        T object = modelMapper.map(reqDto, tClass);
+        T object = modelMapperWrapper.getModelMapper().map(reqDto, tClass);
         T savedObject = service.create(authentication, object);
-        U rspDto = modelMapper.map(savedObject, dtoClass);
+        U rspDto = modelMapperWrapper.getModelMapper().map(savedObject, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<U> read(Authentication authentication, @PathVariable("id") long id) {
+    public ResponseEntity<U> read(Authentication authentication, @PathVariable("id") Long id) {
         T object = service.read(authentication, id);
-        U rspDto = modelMapper.map(object, dtoClass);
+        U rspDto = modelMapperWrapper.getModelMapper().map(object, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
     @PatchMapping
     public ResponseEntity<U> update(Authentication authentication, @RequestBody U reqDto) {
-        T object = modelMapper.map(reqDto, tClass);
+        T object = modelMapperWrapper.getModelMapper().map(reqDto, tClass);
         T updatedObject = service.update(authentication, object);
-        U rspDtos = modelMapper.map(updatedObject, dtoClass);
+        U rspDtos = modelMapperWrapper.getModelMapper().map(updatedObject, dtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(Authentication authentication, @PathVariable("id") long id) {
+    public ResponseEntity<Void> delete(Authentication authentication, @PathVariable("id") Long id) {
         service.delete(authentication, id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/batch")
     public ResponseEntity<List<U>> create(Authentication authentication, @RequestBody List<U> reqDtos) {
-        List<T> objects = MapperUtils.mapList(reqDtos, tClass);
+        List<T> objects = modelMapperWrapper.mapList(reqDtos, tClass);
         List<T> savedObjects = service.create(authentication, objects);
-        List<U> rspDtos = MapperUtils.mapList(savedObjects, dtoClass);
+        List<U> rspDtos = modelMapperWrapper.mapList(savedObjects, dtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
@@ -71,19 +70,19 @@ public abstract class AbstractCrudController<T extends ManagedModel, U, V extend
     public ResponseEntity<Object> read(Authentication authentication, @RequestBody QueryByIdDto queryByIdDto) {
         if (!queryByIdDto.isPaged()) {
             List<T> objects = service.read(authentication, queryByIdDto.getIds());
-            List<U> rspDtos = MapperUtils.mapList(objects, dtoClass);
+            List<U> rspDtos = modelMapperWrapper.mapList(objects, dtoClass);
             return ResponseEntity.ok(rspDtos);
         }
         Page<T> objects = service.read(authentication, queryByIdDto.getIds(), queryByIdDto.getPage(), queryByIdDto.getSize());
-        Page<U> rspDtos = MapperUtils.mapPage(objects, dtoClass);
+        Page<U> rspDtos = modelMapperWrapper.mapPage(objects, dtoClass);
         return ResponseEntity.ok(rspDtos);
     }
 
     @PatchMapping("/batch")
     public ResponseEntity<List<U>> update(Authentication authentication, @RequestBody List<U> reqDtos) {
-        List<T> objects = MapperUtils.mapList(reqDtos, tClass);
+        List<T> objects = modelMapperWrapper.mapList(reqDtos, tClass);
         List<T> updatedObjects = service.update(authentication, objects);
-        List<U> rspDto = MapperUtils.mapList(updatedObjects, dtoClass);
+        List<U> rspDto = modelMapperWrapper.mapList(updatedObjects, dtoClass);
         return ResponseEntity.ok(rspDto);
     }
 
@@ -92,4 +91,5 @@ public abstract class AbstractCrudController<T extends ManagedModel, U, V extend
         service.delete(authentication, ids);
         return ResponseEntity.ok().build();
     }
+
 }

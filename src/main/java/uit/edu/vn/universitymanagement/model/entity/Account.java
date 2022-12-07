@@ -22,7 +22,7 @@ public class Account implements UserDetails, ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
     @SequenceGenerator(name = "account_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private Metadata metadata;
     @Column(unique = true, nullable = false, length = 20)

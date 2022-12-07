@@ -29,7 +29,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
     }
 
     @Override
-    public boolean authorize(Authentication authentication, ActionType actionType, List<T> objects) {
+    public boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects) {
         return objects.stream().map(obj -> authorize(authentication, actionType, obj)).reduce((Boolean::logicalAnd)).orElse(false);
     }
 
@@ -47,7 +47,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public T read(Authentication authentication, long id) {
+    public T read(Authentication authentication, Long id) {
         Optional<T> optionalT = repository.findById(id);
         T object = optionalT.orElseThrow(ResourceNotFoundException::new);
         if (!authorize(authentication, ActionType.READ, object)) {
@@ -73,7 +73,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void delete(Authentication authentication, long id) {
+    public void delete(Authentication authentication, Long id) {
         T object = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
         repository.deleteById(id);
         if (!authorize(authentication, ActionType.WRITE, object)) {
@@ -89,7 +89,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
             obj.getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));
             obj.getMetadata().setModifiedAt(new Date());
         });
-        if (!authorize(authentication, ActionType.WRITE, objects)) {
+        if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
         return repository.saveAll(objects);
@@ -97,13 +97,13 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public Page<T> read(Authentication authentication, List<Long> ids, int page, int size) {
+    public Page<T> read(Authentication authentication, List<Long> ids, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<T> objects = repository.findAllByIdIn(ids, pageable);
         if (ids.isEmpty()) {
             objects = repository.findAll(pageable);
         }
-        if (!authorize(authentication, ActionType.READ, objects.getContent())) {
+        if (!batchAuthorize(authentication, ActionType.READ, objects.getContent())) {
             throw new PermissionDeniedException();
         }
         return objects;
@@ -113,7 +113,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
     @Transactional(rollbackFor = {Exception.class})
     public List<T> read(Authentication authentication, List<Long> ids) {
         List<T> objects = repository.findAllByIdIn(ids);
-        if (!authorize(authentication, ActionType.READ, objects)) {
+        if (!batchAuthorize(authentication, ActionType.READ, objects)) {
             throw new PermissionDeniedException();
         }
         return objects;
@@ -122,7 +122,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public List<T> update(Authentication authentication, List<T> objects) {
-        if (!authorize(authentication, ActionType.WRITE, objects)) {
+        if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
         List<Long> ids = objects.stream().map(ManagedModel::getId).collect(Collectors.toList());
@@ -146,7 +146,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
             throw new ResourceNotFoundException();
         }
         repository.deleteByIdIn(ids);
-        if (!authorize(authentication, ActionType.WRITE, objects)) {
+        if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
     }

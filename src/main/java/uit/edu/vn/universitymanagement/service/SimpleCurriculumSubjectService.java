@@ -26,7 +26,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     }
 
     @Override
-    public CurriculumSubject read(Authentication authentication, long id) {
+    public CurriculumSubject read(Authentication authentication, Long id) {
         return super.read(authentication, id);
     }
 
@@ -36,7 +36,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     }
 
     @Override
-    public void delete(Authentication authentication, long id) {
+    public void delete(Authentication authentication, Long id) {
         super.delete(authentication, id);
     }
 
@@ -46,7 +46,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     }
 
     @Override
-    public Page<CurriculumSubject> read(Authentication authentication, List<Long> ids, int page, int size) {
+    public Page<CurriculumSubject> read(Authentication authentication, List<Long> ids, Integer page, Integer size) {
         return super.read(authentication, ids, page, size);
     }
 

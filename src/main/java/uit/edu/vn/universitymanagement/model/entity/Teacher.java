@@ -26,7 +26,7 @@ public class Teacher implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "teacher_id_seq")
     @SequenceGenerator(name = "teacher_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

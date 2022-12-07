@@ -26,7 +26,7 @@ public class Grade implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_id_seq")
     @SequenceGenerator(name = "grade_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private Metadata metadata;
     private float weight;

@@ -18,7 +18,7 @@ public class Faculty implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_id_seq")
     @SequenceGenerator(name = "faculty_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

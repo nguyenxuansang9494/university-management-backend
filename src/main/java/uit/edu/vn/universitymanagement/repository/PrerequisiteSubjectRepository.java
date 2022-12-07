@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface PrerequisiteSubjectRepository extends CommonJpaRepository<PrerequisiteSubject, Long> {
     List<PrerequisiteSubject> findAllBySubjectIdIn(List<Long> ids);
-    List<PrerequisiteSubject> findAllBySubjectId(long id);
+    List<PrerequisiteSubject> findAllBySubjectId(Long id);
+    List<PrerequisiteSubject> findAllByPrerequisiteId(Long id);
 }

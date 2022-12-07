@@ -30,7 +30,7 @@ public class SubjectClassTeacher implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_teacher_id_seq")
     @SequenceGenerator(name = "subject_teacher_class_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private Metadata metadata;
     @ManyToOne

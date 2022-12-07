@@ -16,5 +16,5 @@ public interface CommonJpaRepository<T, L> extends JpaRepository<T, L> {
     List<T> findAllByIdIn(List<L> ids);
 
     void deleteByIdIn(List<L> ids);
-    int countByIdIn(List<L> ids);
+    Integer countByIdIn(List<L> ids);
 }

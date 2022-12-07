@@ -27,7 +27,7 @@ public class SubjectClass implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_id_seq")
     @SequenceGenerator(name = "subject_class_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     private String codeName;
     @Embedded
     private Metadata metadata;

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MajorDto {
-    private long id;
+    private Long id;
     private String name;
     private String codeName;
     private MetadataDto metadata;

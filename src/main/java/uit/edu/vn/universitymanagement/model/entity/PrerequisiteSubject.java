@@ -29,7 +29,7 @@ public class PrerequisiteSubject implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prerequisite_subject_gen")
     @SequenceGenerator(name = "prerequisite_subject_gen", allocationSize = 100)
-    private long id;
+    private Long id;
     @ManyToOne
     private Subject subject;
     @ManyToOne

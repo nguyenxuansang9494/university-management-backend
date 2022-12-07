@@ -9,7 +9,7 @@ import java.util.List;
 public interface MultipleCrudService<T extends ManagedModel> {
     List<T> create(Authentication authentication, List<T> objects);
 
-    Page<T> read(Authentication authentication, List<Long> ids, int page, int size);
+    Page<T> read(Authentication authentication, List<Long> ids, Integer page, Integer size);
 
     List<T> read(Authentication authentication, List<Long> ids);
 

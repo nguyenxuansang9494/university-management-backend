@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PrerequisiteSubjectDto {
-    private long id;
-    private long subjectId;
+    private Long id;
+    private Long subjectId;
     private SubjectDto prerequisite;
     private MetadataDto metadata;
 }

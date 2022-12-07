@@ -30,7 +30,7 @@ public class CurriculumSubject implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "curriculum_subject_id_seq")
     @SequenceGenerator(name = "curriculum_subject_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @ManyToOne
     private Curriculum curriculum;
     @ManyToOne

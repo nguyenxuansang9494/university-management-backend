@@ -25,7 +25,7 @@ public class Major implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "major_id_seq")
     @SequenceGenerator(name = "major_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     private String name;
     private String codeName;
     @Embedded

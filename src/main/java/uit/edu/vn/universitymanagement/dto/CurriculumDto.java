@@ -12,7 +12,7 @@ import uit.edu.vn.universitymanagement.model.Term;
 @Setter
 public class CurriculumDto {
 
-    private long id;
+    private Long id;
     private String name;
     private String codeName;
     private MetadataDto metadata;

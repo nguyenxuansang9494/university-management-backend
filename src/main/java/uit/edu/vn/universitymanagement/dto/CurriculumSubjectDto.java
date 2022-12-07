@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CurriculumSubjectDto {
-    private long id;
-    private long curriculumId;
+    private Long id;
+    private Long curriculumId;
     private SubjectDto subject;
     private boolean isOptional;
     private MetadataDto metadata;

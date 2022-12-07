@@ -27,7 +27,7 @@ public class Employee implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")
     @SequenceGenerator(name = "admin_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private PersonalInfomation personalInfomation;
     @OneToOne

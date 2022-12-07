@@ -13,5 +13,5 @@ import java.util.Date;
 @Setter
 public class MetadataDto {
     private Date modifiedAt;
-    private long lastModifierId;
+    private Long lastModifierId;
 }

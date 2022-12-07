@@ -29,7 +29,7 @@ public class SubjectClassResult implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_result_id_seq")
     @SequenceGenerator(name = "subject_class_result_id_seq", allocationSize = 100)
-    private long id;
+    private Long id;
     @Embedded
     private Metadata metadata;
     private float finalResult;

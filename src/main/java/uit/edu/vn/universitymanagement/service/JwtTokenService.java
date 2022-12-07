@@ -22,7 +22,7 @@ public class JwtTokenService {
     private String secret;
 
     @Value("${jwt.duration}")
-    private long duration;
+    private Long duration;
 
 
     private Key getKey() {
@@ -43,7 +43,7 @@ public class JwtTokenService {
         return new JwtTokenDto("Bearer", token, now, expireAt);
     }
 
-    public long getAccountId(String token) {
+    public Long getAccountId(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
