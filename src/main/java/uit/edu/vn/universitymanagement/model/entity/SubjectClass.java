@@ -11,15 +11,11 @@ import uit.edu.vn.universitymanagement.model.Term;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,12 +30,8 @@ public class SubjectClass implements ManagedModel {
     private long id;
     @Embedded
     private Metadata metadata;
-    @OneToOne
+    @ManyToOne
     private Subject subject;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subjectClasses")
-    private Set<Teacher> teachers;
-    @OneToMany
-    private Set<SubjectClassResult> subjectClassResults;
     @Embedded
     private Term term;
 }
