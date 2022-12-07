@@ -32,11 +32,13 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
 
     @Override
     public List<PrerequisiteSubject> create(Authentication authentication, List<PrerequisiteSubject> objects) {
+        objects.forEach(this::checkCyclicDependency);
         return super.create(authentication, objects);
     }
 
     @Override
     public List<PrerequisiteSubject> update(Authentication authentication, List<PrerequisiteSubject> objects) {
+        objects.forEach(this::checkCyclicDependency);
         return super.update(authentication, objects);
     }
 
