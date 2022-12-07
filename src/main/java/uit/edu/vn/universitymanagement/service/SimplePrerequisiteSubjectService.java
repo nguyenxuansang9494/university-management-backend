@@ -58,8 +58,17 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
     }
 
     public Set<Subject> exploreDependants(Long id) {
-        Set<Subject> exploredSet = new HashSet<>();
         List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllByPrerequisiteId(id);
+        return getDependantSubjects(prerequisiteSubjects);
+    }
+
+    public Set<Subject> exploreDependants(List<Long> ids) {
+        List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllByPrerequisiteIdIn(ids);
+        return getDependantSubjects(prerequisiteSubjects);
+    }
+
+    private Set<Subject> getDependantSubjects(List<PrerequisiteSubject> prerequisiteSubjects) {
+        Set<Subject> exploredSet = new HashSet<>();
         while (!prerequisiteSubjects.isEmpty()) {
             List<Subject> subjects = prerequisiteSubjects.stream()
                     .map(PrerequisiteSubject::getSubject)
@@ -78,14 +87,14 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
     }
 
     public Set<Subject> explorePrerequisite(Long id) {
-        Set<Subject> exploredSet = new HashSet<>();
         List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllBySubjectId(id);
+        Set<Subject> exploredSet = new HashSet<>();
         while (!prerequisiteSubjects.isEmpty()) {
-            List<Subject> subjects = prerequisiteSubjects.stream()
+            List<Subject> exploredSubjects = prerequisiteSubjects.stream()
                     .map(PrerequisiteSubject::getPrerequisite)
                     .collect(Collectors.toList());
-            exploredSet.addAll(subjects);
-            List<Long> prerequisiteIds = subjects.stream()
+            exploredSet.addAll(exploredSubjects);
+            List<Long> prerequisiteIds = exploredSubjects.stream()
                     .map(Subject::getId)
                     .collect(Collectors.toList());
             prerequisiteSubjects = repository.findAllBySubjectIdIn(prerequisiteIds);

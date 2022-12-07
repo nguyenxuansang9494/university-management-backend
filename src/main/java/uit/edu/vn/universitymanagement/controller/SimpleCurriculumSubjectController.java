@@ -10,9 +10,9 @@ import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 
 @RestController
 @RequestMapping("/api/curriculum/subject")
-public class CurriculumSubjectController extends AbstractCrudController<CurriculumSubject, CurriculumSubjectDto, SimpleCurriculumSubjectService, CurriculumSubjectRepository> {
+public class SimpleCurriculumSubjectController extends AbstractCrudController<CurriculumSubject, CurriculumSubjectDto, SimpleCurriculumSubjectService, CurriculumSubjectRepository> {
 
-    public CurriculumSubjectController(ModelMapperWrapper modelMapperWrapper, SimpleCurriculumSubjectService service) {
+    public SimpleCurriculumSubjectController(ModelMapperWrapper modelMapperWrapper, SimpleCurriculumSubjectService service) {
         super(modelMapperWrapper, service, CurriculumSubject.class, CurriculumSubjectDto.class);
     }
 }
