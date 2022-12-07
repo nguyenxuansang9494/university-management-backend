@@ -18,9 +18,9 @@ public class AccountDto {
     private String password;
     private MetadataDto metadata;
     private Set<Role> roles;
-    private boolean isAccountExpired;
-    private boolean isAccountLock;
-    private boolean isCredentialExpired;
-    private boolean isEnable;
+    private Boolean isAccountExpired;
+    private Boolean isAccountLock;
+    private Boolean isCredentialExpired;
+    private Boolean isEnable;
 
 }

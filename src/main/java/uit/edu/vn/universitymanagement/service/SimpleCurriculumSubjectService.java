@@ -1,34 +1,44 @@
 package uit.edu.vn.universitymanagement.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uit.edu.vn.universitymanagement.model.entity.CurriculumSubject;
+import uit.edu.vn.universitymanagement.model.entity.Subject;
 import uit.edu.vn.universitymanagement.repository.CurriculumRepository;
 import uit.edu.vn.universitymanagement.repository.CurriculumSubjectRepository;
-import uit.edu.vn.universitymanagement.repository.SubjectRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SimpleCurriculumSubjectService extends AbstractCrudService<CurriculumSubject, CurriculumSubjectRepository> {
-    private final CurriculumRepository curriculumRepository;
-    private final SubjectRepository subjectRepository;
-    public SimpleCurriculumSubjectService(CurriculumSubjectRepository repository, CurriculumRepository curriculumRepository, SubjectRepository subjectRepository) {
+    private final SimpleCurriculumService curriculumService;
+    private final SimplePrerequisiteSubjectService prerequisiteSubjectService;
+
+    public SimpleCurriculumSubjectService(CurriculumSubjectRepository repository, CurriculumRepository curriculumRepository, SimpleCurriculumService curriculumService, SimplePrerequisiteSubjectService prerequisiteSubjectService) {
         super(repository);
-        this.curriculumRepository = curriculumRepository;
-        this.subjectRepository = subjectRepository;
+        this.curriculumService = curriculumService;
+        this.prerequisiteSubjectService = prerequisiteSubjectService;
     }
 
+
+    public void savePrerequisiteSubjects(Authentication authentication, CurriculumSubject object) {
+        Set<Subject> prerequisiteSubjects = prerequisiteSubjectService.explorePrerequisite(object.getSubject());
+        List<CurriculumSubject> curriculumSubjects = prerequisiteSubjects.stream()
+                .map(e -> new CurriculumSubject(null, object.getCurriculum(), e, object.isOptional(), null))
+                .collect(Collectors.toList());
+        super.create(authentication, curriculumSubjects);
+    }
+
+    @Transactional
     @Override
     public CurriculumSubject create(Authentication authentication, CurriculumSubject object) {
         return super.create(authentication, object);
     }
 
-    @Override
-    public CurriculumSubject read(Authentication authentication, Long id) {
-        return super.read(authentication, id);
-    }
 
     @Override
     public CurriculumSubject update(Authentication authentication, CurriculumSubject object) {
@@ -37,22 +47,22 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
 
     @Override
     public void delete(Authentication authentication, Long id) {
+        Set<Subject> prerequisiteSubjects = prerequisiteSubjectService.exploreDependants(id);
+        List<Long> ids = prerequisiteSubjects.stream()
+                .map(Subject::getId)
+                .collect(Collectors.toList());
+        super.delete(authentication, ids);
         super.delete(authentication, id);
     }
 
     @Override
     public List<CurriculumSubject> create(Authentication authentication, List<CurriculumSubject> objects) {
+        Set<Subject> subjects = new HashSet<>();
+        objects.forEach(object -> {
+            subjects.addAll(prerequisiteSubjectService.explorePrerequisite(object.getSubject()));
+        });
+
         return super.create(authentication, objects);
-    }
-
-    @Override
-    public Page<CurriculumSubject> read(Authentication authentication, List<Long> ids, Integer page, Integer size) {
-        return super.read(authentication, ids, page, size);
-    }
-
-    @Override
-    public List<CurriculumSubject> read(Authentication authentication, List<Long> ids) {
-        return super.read(authentication, ids);
     }
 
     @Override

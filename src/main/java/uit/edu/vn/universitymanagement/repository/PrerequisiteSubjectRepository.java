@@ -8,4 +8,5 @@ public interface PrerequisiteSubjectRepository extends CommonJpaRepository<Prere
     List<PrerequisiteSubject> findAllBySubjectIdIn(List<Long> ids);
     List<PrerequisiteSubject> findAllBySubjectId(Long id);
     List<PrerequisiteSubject> findAllByPrerequisiteId(Long id);
+    List<PrerequisiteSubject> findAllByPrerequisiteIdIn(List<Long> ids);
 }

@@ -13,6 +13,6 @@ public class CurriculumSubjectDto {
     private Long id;
     private Long curriculumId;
     private SubjectDto subject;
-    private boolean isOptional;
+    private Boolean isOptional;
     private MetadataDto metadata;
 }

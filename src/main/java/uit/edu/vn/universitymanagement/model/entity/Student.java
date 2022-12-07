@@ -45,5 +45,5 @@ public class Student implements ManagedModel {
     private Curriculum curriculum;
     @ElementCollection(targetClass = Term.class)
     private Set<Term> inactiveTerms;
-    private boolean isActive;
+    private Boolean isActive;
 }
