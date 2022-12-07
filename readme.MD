@@ -19,5 +19,5 @@ The system should behave like following expectations when it handle subjects and
 * when a subject is added into a curriculum, all of its prerequisite subjects must also be added into the curriculum.
 * when a subject is removed from a curriculum, all subjects depend on it should also be deleted.
 * when a subject is removed from a curriculum, it is optional to remove its dependencies which are not other subjects' dependency.
-* a circle of prerequisite subjects is not allowed.
+* a cycle of prerequisite subjects is not allowed.
 
