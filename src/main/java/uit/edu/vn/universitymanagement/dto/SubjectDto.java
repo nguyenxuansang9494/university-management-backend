@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,5 +16,4 @@ public class SubjectDto {
     private Integer credit;
     private FacultyDto faculty;
     MetadataDto metadata;
-    private Set<NonRecursiveSubjectDto> prerequisiteSubjects;
 }

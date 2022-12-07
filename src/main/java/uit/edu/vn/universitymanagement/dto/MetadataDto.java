@@ -12,10 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class MetadataDto {
-    private Date createdAt;
-    private long creatorId;
-    private String creatorUsername;
     private Date modifiedAt;
     private long lastModifierId;
-    private String lastModifierUsername;
 }

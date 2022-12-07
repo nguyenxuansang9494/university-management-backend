@@ -20,9 +20,6 @@ public class ModelMapperConfig {
     @PostConstruct
     public void metadataToMetadataDto() {
         TypeMap<Metadata, MetadataDto> typeMap = modelMapper.createTypeMap(Metadata.class, MetadataDto.class);
-        typeMap.addMappings(mapper -> mapper.map(src -> src.getCreator().getUsername(), MetadataDto::setCreatorUsername));
-        typeMap.addMappings(mapper -> mapper.map(src -> src.getCreator().getId(), MetadataDto::setCreatorId));
-        typeMap.addMappings(mapper -> mapper.map(src -> src.getLastModifier().getUsername(), MetadataDto::setLastModifierUsername));
         typeMap.addMappings(mapper -> mapper.map(src -> src.getLastModifier().getId(), MetadataDto::setLastModifierId));
     }
 

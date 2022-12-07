@@ -9,14 +9,11 @@ import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +33,4 @@ public class Subject implements ManagedModel {
     private Metadata metadata;
     @ManyToOne(optional = false)
     private Faculty faculty;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Subject> prerequisiteSubjects;
 }

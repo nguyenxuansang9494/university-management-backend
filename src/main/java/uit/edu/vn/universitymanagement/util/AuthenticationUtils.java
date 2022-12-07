@@ -1,9 +1,7 @@
 package uit.edu.vn.universitymanagement.util;
 
 import org.springframework.security.core.Authentication;
-import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.model.entity.Account;
-import uit.edu.vn.universitymanagement.service.ActionType;
 
 public final class AuthenticationUtils {
     private AuthenticationUtils(){
@@ -17,11 +15,4 @@ public final class AuthenticationUtils {
         throw new IllegalArgumentException("principal is not an account");
     }
 
-    public static boolean allowAllToReadButOnlyModeratorAboveToWrite(Authentication authentication, ActionType actionType) {
-        Account account = AuthenticationUtils.getAccount(authentication);
-        if (actionType.ordinal() > ActionType.READ.ordinal()) {
-            return account.getAuthorities().stream().noneMatch(e -> Role.MODERATOR.equals(e) || Role.ADMINISTRATOR.equals(e));
-        }
-        return false;
-    }
 }

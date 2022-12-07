@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class NonRecursiveSubjectDto {
+public class CurriculumSubjectDto {
     private long id;
-    private String name;
-    private String codeName;
-    private Integer credit;
+    private long curriculumId;
+    private SubjectDto subject;
+    private boolean isOptional;
+    private MetadataDto metadata;
 }
