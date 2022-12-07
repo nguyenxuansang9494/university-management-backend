@@ -22,9 +22,11 @@ import javax.persistence.UniqueConstraint;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"subject_class_id", "teacher_id"})
-})
+@Table(
+        name = "subject_class_teacher",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"subject_class_id", "teacher_id"})
+        })
 public class SubjectClassTeacher implements ManagedModel {
 
     @Id

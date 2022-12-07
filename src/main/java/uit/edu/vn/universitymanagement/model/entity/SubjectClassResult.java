@@ -22,9 +22,11 @@ import javax.persistence.UniqueConstraint;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"subject_class_id", "student_id"})
-})
+@Table(
+        name = "subject_class_result",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"subject_class_id", "student_id"})
+        })
 public class SubjectClassResult implements ManagedModel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_result_id_seq")
