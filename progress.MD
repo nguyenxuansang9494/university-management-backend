@@ -1,4 +1,4 @@
-Features are ready for demo:
+#### Features are ready for demo:
 * Login
 * Account
 * Faculty
@@ -6,17 +6,17 @@ Features are ready for demo:
 * Curriculum
 * Subject
 
-Features need to be tested more:
+#### Features need to be tested more:
 * Prerequisite subject
 * Curriculum - Subject
 
-WIP features:
+#### WIP features:
 * Teacher
 * Student
 * Grade
 * Employee
 
-Planning features:
+#### Planning features:
 * Real-time chatting between users
 * Search feature to search Faculty, Major, Subject, Teacher, Student, Employee
 * Schedule
