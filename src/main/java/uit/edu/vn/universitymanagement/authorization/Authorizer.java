@@ -1,4 +1,4 @@
-package uit.edu.vn.universitymanagement.service;
+package uit.edu.vn.universitymanagement.authorization;
 
 import org.springframework.security.core.Authentication;
 import uit.edu.vn.universitymanagement.model.Role;

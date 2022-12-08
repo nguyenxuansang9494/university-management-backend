@@ -1,4 +1,4 @@
-package uit.edu.vn.universitymanagement.service;
+package uit.edu.vn.universitymanagement.authorization;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

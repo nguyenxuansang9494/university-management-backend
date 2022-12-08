@@ -8,8 +8,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uit.edu.vn.universitymanagement.service.CustomUserDetailsService;
-import uit.edu.vn.universitymanagement.service.JwtTokenService;
+import uit.edu.vn.universitymanagement.authorization.CustomUserDetailsService;
+import uit.edu.vn.universitymanagement.authorization.JwtTokenService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

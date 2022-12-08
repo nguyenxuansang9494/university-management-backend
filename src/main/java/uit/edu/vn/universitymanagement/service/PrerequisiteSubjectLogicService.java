@@ -3,6 +3,8 @@ package uit.edu.vn.universitymanagement.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import uit.edu.vn.universitymanagement.authorization.ActionType;
+import uit.edu.vn.universitymanagement.authorization.Authorizer;
 import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;

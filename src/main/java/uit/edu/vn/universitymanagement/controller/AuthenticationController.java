@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.JwtTokenDto;
 import uit.edu.vn.universitymanagement.dto.LoginDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
-import uit.edu.vn.universitymanagement.service.JwtTokenService;
+import uit.edu.vn.universitymanagement.authorization.JwtTokenService;
 
 @RequiredArgsConstructor
 @RestController

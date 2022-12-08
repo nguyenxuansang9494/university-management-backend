@@ -1,4 +1,4 @@
-package uit.edu.vn.universitymanagement.service;
+package uit.edu.vn.universitymanagement.authorization;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
