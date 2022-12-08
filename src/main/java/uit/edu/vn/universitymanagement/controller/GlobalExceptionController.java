@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uit.edu.vn.universitymanagement.dto.ExceptionDto;
+import uit.edu.vn.universitymanagement.exception.CyclicDependencyException;
 import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
 
@@ -34,5 +35,9 @@ public class GlobalExceptionController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = ResourceNotFoundException.class)
     public ResponseEntity<ExceptionDto> handleResourceNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionDto(new Date(), HttpStatus.NOT_FOUND, "not found"));
+    }
+    @ExceptionHandler(value = CyclicDependencyException.class)
+    public ResponseEntity<ExceptionDto> handleCyclicDependencyException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDto(new Date(), HttpStatus.BAD_REQUEST, "cycle of dependency"));
     }
 }

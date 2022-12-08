@@ -103,7 +103,7 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
     }
 
     private void checkCyclicDependency(PrerequisiteSubject object) {
-        Set<Long> exploredPrerequisiteSubjectIds = explorePrerequisite(object.getSubject()).stream()
+        Set<Long> exploredPrerequisiteSubjectIds = explorePrerequisite(object.getPrerequisite()).stream()
                 .map(Subject::getId)
                 .collect(Collectors.toSet());
         if (exploredPrerequisiteSubjectIds.contains(object.getSubject().getId())) {

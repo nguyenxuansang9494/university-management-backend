@@ -39,6 +39,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
         if (!authorize(authentication, ActionType.WRITE, object)) {
             throw new PermissionDeniedException();
         }
+        object.setId(null);
         object.setMetadata(new Metadata());
         object.getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));
         object.getMetadata().setModifiedAt(new Date());
@@ -85,6 +86,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
     @Transactional(rollbackFor = {Exception.class})
     public List<T> create(Authentication authentication, List<T> objects) {
         objects.forEach(obj -> {
+            obj.setId(null);
             obj.setMetadata(new Metadata());
             obj.getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));
             obj.getMetadata().setModifiedAt(new Date());

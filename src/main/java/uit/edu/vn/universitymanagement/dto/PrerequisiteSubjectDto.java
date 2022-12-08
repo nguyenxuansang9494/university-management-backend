@@ -12,6 +12,6 @@ import lombok.Setter;
 public class PrerequisiteSubjectDto {
     private Long id;
     private Long subjectId;
-    private SubjectDto prerequisite;
+    private Long prerequisiteId;
     private MetadataDto metadata;
 }
