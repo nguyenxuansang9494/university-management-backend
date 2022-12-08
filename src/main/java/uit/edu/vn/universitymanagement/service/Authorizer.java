@@ -8,8 +8,12 @@ import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
 import java.util.List;
 
 public interface Authorizer<T> {
-    boolean authorize(Authentication authentication, ActionType actionType, T object);
-    boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects);
+    default boolean authorize(Authentication authentication, ActionType actionType, T object) {
+        return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR);
+    }
+    default boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects) {
+        return objects.stream().map(obj -> authorize(authentication, actionType, obj)).reduce((Boolean::logicalAnd)).orElse(false);
+    }
 
     static boolean allowAllToReadButOnlyCertainRoleAboveToWrite(Authentication authentication, ActionType actionType, Role role) {
         Account account = AuthenticationUtils.getAccount(authentication);

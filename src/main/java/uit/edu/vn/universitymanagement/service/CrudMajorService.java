@@ -5,8 +5,8 @@ import uit.edu.vn.universitymanagement.model.entity.Major;
 import uit.edu.vn.universitymanagement.repository.MajorRepository;
 
 @Service
-public class SimpleMajorService extends AbstractCrudService<Major, MajorRepository> {
-    public SimpleMajorService(MajorRepository repository) {
+public class CrudMajorService extends AbstractCrudService<Major, MajorRepository> {
+    public CrudMajorService(MajorRepository repository) {
         super(repository);
     }
 }

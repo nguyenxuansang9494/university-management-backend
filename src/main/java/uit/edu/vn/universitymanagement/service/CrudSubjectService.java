@@ -5,8 +5,8 @@ import uit.edu.vn.universitymanagement.model.entity.Subject;
 import uit.edu.vn.universitymanagement.repository.SubjectRepository;
 
 @Service
-public class SimpleSubjectService extends AbstractCrudService<Subject, SubjectRepository> {
-    public SimpleSubjectService(SubjectRepository repository) {
+public class CrudSubjectService extends AbstractCrudService<Subject, SubjectRepository> {
+    public CrudSubjectService(SubjectRepository repository) {
         super(repository);
     }
 }

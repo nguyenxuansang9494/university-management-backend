@@ -10,7 +10,6 @@ import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
 import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.model.Metadata;
-import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
 import uit.edu.vn.universitymanagement.util.ManagedModelUtils;
@@ -22,16 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class AbstractCrudService<T extends ManagedModel, U extends CommonJpaRepository<T, Long>> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
     final U repository;
-
-    @Override
-    public boolean authorize(Authentication authentication, ActionType actionType, T object) {
-        return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR);
-    }
-
-    @Override
-    public boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects) {
-        return objects.stream().map(obj -> authorize(authentication, actionType, obj)).reduce((Boolean::logicalAnd)).orElse(false);
-    }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})

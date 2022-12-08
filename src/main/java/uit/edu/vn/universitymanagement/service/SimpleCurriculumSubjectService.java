@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class SimpleCurriculumSubjectService extends AbstractCrudService<CurriculumSubject, CurriculumSubjectRepository> {
-    private final SimplePrerequisiteSubjectService prerequisiteSubjectService;
+    private final PrerequisiteSubjectLogicService prerequisiteSubjectLogicService;
 
-    public SimpleCurriculumSubjectService(CurriculumSubjectRepository repository, SimplePrerequisiteSubjectService prerequisiteSubjectService) {
+    public SimpleCurriculumSubjectService(CurriculumSubjectRepository repository, PrerequisiteSubjectLogicService prerequisiteSubjectLogicService) {
         super(repository);
-        this.prerequisiteSubjectService = prerequisiteSubjectService;
+        this.prerequisiteSubjectLogicService = prerequisiteSubjectLogicService;
     }
 
 
@@ -44,7 +44,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
 
     @Transactional
     public void deleteAllDependants(Authentication authentication, CurriculumSubject curriculumSubject) {
-        List<Subject> dependants = new ArrayList<>(prerequisiteSubjectService.exploreDependants(curriculumSubject.getSubject().getId()));
+        List<Subject> dependants = new ArrayList<>(prerequisiteSubjectLogicService.exploreDependants(curriculumSubject.getSubject().getId()));
         List<Long> ids = ManagedModelUtils.convertToLongList(repository.findAllByCurriculumAndSubjectIn(curriculumSubject.getCurriculum(), dependants));
         super.delete(authentication, ids);
     }
@@ -52,7 +52,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     @Override
     @Transactional
     public CurriculumSubject create(Authentication authentication, CurriculumSubject object) {
-        Set<Subject> prerequisiteSubjects = prerequisiteSubjectService.explorePrerequisite(object.getSubject());
+        Set<Subject> prerequisiteSubjects = prerequisiteSubjectLogicService.explorePrerequisite(object.getSubject());
         savePrerequisiteSubjects(authentication, object, prerequisiteSubjects);
         return super.create(authentication, object);
     }
@@ -84,7 +84,7 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     public List<CurriculumSubject> create(Authentication authentication, List<CurriculumSubject> objects) {
         for (CurriculumSubject object : objects
         ) {
-            Set<Subject> prerequisiteSubjects = prerequisiteSubjectService.explorePrerequisite(object.getSubject());
+            Set<Subject> prerequisiteSubjects = prerequisiteSubjectLogicService.explorePrerequisite(object.getSubject());
             savePrerequisiteSubjects(authentication, object, prerequisiteSubjects);
         }
         return super.create(authentication, objects);
@@ -114,10 +114,10 @@ public class SimpleCurriculumSubjectService extends AbstractCrudService<Curricul
     }
 
     public void autoDelete(Authentication authentication, CurriculumSubject curriculumSubject) {
-        Set<Subject> prerequisites = prerequisiteSubjectService.explorePrerequisite(curriculumSubject.getSubject().getId());
+        Set<Subject> prerequisites = prerequisiteSubjectLogicService.explorePrerequisite(curriculumSubject.getSubject().getId());
         List<Subject> deletedSubject = new LinkedList<>();
         prerequisites.forEach(e -> {
-            Set<Subject> dependants = prerequisiteSubjectService.exploreDependants(e.getId());
+            Set<Subject> dependants = prerequisiteSubjectLogicService.exploreDependants(e.getId());
             if (dependants.size() == 1 && dependants.contains(e)) {
                 deletedSubject.add(e);
             }

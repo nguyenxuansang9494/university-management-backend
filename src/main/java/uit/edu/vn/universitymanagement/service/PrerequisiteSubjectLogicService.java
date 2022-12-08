@@ -1,8 +1,8 @@
 package uit.edu.vn.universitymanagement.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import uit.edu.vn.universitymanagement.exception.CyclicDependencyException;
 import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;
@@ -14,35 +14,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
-public class SimplePrerequisiteSubjectService extends AbstractCrudService<PrerequisiteSubject, PrerequisiteSubjectRepository> {
-    public SimplePrerequisiteSubjectService(PrerequisiteSubjectRepository repository) {
-        super(repository);
-    }
+public class PrerequisiteSubjectLogicService implements Authorizer<PrerequisiteSubject> {
 
-    @Override
-    public PrerequisiteSubject create(Authentication authentication, PrerequisiteSubject object) {
-        checkCyclicDependency(object);
-        return super.create(authentication, object);
-    }
-
-    @Override
-    public PrerequisiteSubject update(Authentication authentication, PrerequisiteSubject object) {
-        checkCyclicDependency(object);
-        return super.update(authentication, object);
-    }
-
-    @Override
-    public List<PrerequisiteSubject> create(Authentication authentication, List<PrerequisiteSubject> objects) {
-        objects.forEach(this::checkCyclicDependency);
-        return super.create(authentication, objects);
-    }
-
-    @Override
-    public List<PrerequisiteSubject> update(Authentication authentication, List<PrerequisiteSubject> objects) {
-        objects.forEach(this::checkCyclicDependency);
-        return super.update(authentication, objects);
-    }
+    private final PrerequisiteSubjectRepository repository;
 
     public List<PrerequisiteSubject> findBySubjectId(Authentication authentication, Long id) {
         if (!authorize(authentication, ActionType.READ, null)) {
@@ -94,12 +70,10 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
         return exploredSet;
     }
 
-    private void checkCyclicDependency(PrerequisiteSubject object) {
+    public boolean checkCyclicDependency(PrerequisiteSubject object) {
         Set<Long> exploredPrerequisiteSubjectIds = explorePrerequisite(object.getPrerequisite()).stream()
                 .map(Subject::getId)
                 .collect(Collectors.toSet());
-        if (exploredPrerequisiteSubjectIds.contains(object.getSubject().getId())) {
-            throw new CyclicDependencyException();
-        }
+        return exploredPrerequisiteSubjectIds.contains(object.getSubject().getId());
     }
 }

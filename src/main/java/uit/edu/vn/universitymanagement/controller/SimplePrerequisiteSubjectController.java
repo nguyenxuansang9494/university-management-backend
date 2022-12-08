@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.PrerequisiteSubjectDto;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
-import uit.edu.vn.universitymanagement.service.SimplePrerequisiteSubjectService;
+import uit.edu.vn.universitymanagement.service.CrudPrerequisiteSubjectService;
 import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 
 import java.util.Collections;
@@ -17,9 +17,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/prerequisite")
-public class SimplePrerequisiteSubjectController extends AbstractCrudController<PrerequisiteSubject, PrerequisiteSubjectDto, SimplePrerequisiteSubjectService, PrerequisiteSubjectRepository> {
+public class SimplePrerequisiteSubjectController extends AbstractCrudController<PrerequisiteSubject, PrerequisiteSubjectDto, CrudPrerequisiteSubjectService, PrerequisiteSubjectRepository> {
 
-    public SimplePrerequisiteSubjectController(ModelMapperWrapper modelMapperWrapper, SimplePrerequisiteSubjectService service) {
+    public SimplePrerequisiteSubjectController(ModelMapperWrapper modelMapperWrapper, CrudPrerequisiteSubjectService service) {
         super(modelMapperWrapper, service, PrerequisiteSubject.class, PrerequisiteSubjectDto.class);
     }
 
