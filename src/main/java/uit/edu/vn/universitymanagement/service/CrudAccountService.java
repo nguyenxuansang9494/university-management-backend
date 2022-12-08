@@ -18,10 +18,10 @@ import java.util.Map;
 
 
 @Service
-public class AccountCrudService extends AbstractCrudService<Account> {
+public class CrudAccountService extends AbstractCrudService<Account> {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AccountCrudService(AccountRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public CrudAccountService(AccountRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         super(repository);
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
