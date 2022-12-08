@@ -13,11 +13,11 @@ import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
+import uit.edu.vn.universitymanagement.util.ManagedModelUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public abstract class AbstractCrudService<T extends ManagedModel, U extends CommonJpaRepository<T, Long>> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
@@ -127,7 +127,7 @@ public abstract class AbstractCrudService<T extends ManagedModel, U extends Comm
         if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
-        List<Long> ids = objects.stream().map(ManagedModel::getId).collect(Collectors.toList());
+        List<Long> ids = ManagedModelUtils.convertToLongList(objects);
 
         if (repository.countByIdIn(ids) != objects.size()) {
             throw new ResourceNotFoundException();

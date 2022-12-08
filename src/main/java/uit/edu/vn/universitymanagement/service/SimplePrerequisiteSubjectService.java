@@ -7,6 +7,7 @@ import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;
 import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
+import uit.edu.vn.universitymanagement.util.ManagedModelUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -58,26 +59,19 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
     }
 
     public Set<Subject> exploreDependants(Long id) {
-        List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllByPrerequisiteId(id);
-        return getDependantSubjects(prerequisiteSubjects);
+        List<PrerequisiteSubject> dependants = repository.findAllByPrerequisiteId(id);
+        return getDependantSubjects(dependants);
     }
 
-    public Set<Subject> exploreDependants(List<Long> ids) {
-        List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllByPrerequisiteIdIn(ids);
-        return getDependantSubjects(prerequisiteSubjects);
-    }
-
-    private Set<Subject> getDependantSubjects(List<PrerequisiteSubject> prerequisiteSubjects) {
+    private Set<Subject> getDependantSubjects(List<PrerequisiteSubject> dependants) {
         Set<Subject> exploredSet = new HashSet<>();
-        while (!prerequisiteSubjects.isEmpty()) {
-            List<Subject> subjects = prerequisiteSubjects.stream()
+        while (!dependants.isEmpty()) {
+            List<Subject> subjects = dependants.stream()
                     .map(PrerequisiteSubject::getSubject)
                     .collect(Collectors.toList());
             exploredSet.addAll(subjects);
-            List<Long> ids = subjects.stream()
-                    .map(Subject::getId)
-                    .collect(Collectors.toList());
-            prerequisiteSubjects = repository.findAllByPrerequisiteIdIn(ids);
+            List<Long> ids = ManagedModelUtils.convertToLongList(subjects);
+            dependants = repository.findAllByPrerequisiteIdIn(ids);
         }
         return exploredSet;
     }
@@ -87,17 +81,15 @@ public class SimplePrerequisiteSubjectService extends AbstractCrudService<Prereq
     }
 
     public Set<Subject> explorePrerequisite(Long id) {
-        List<PrerequisiteSubject> prerequisiteSubjects = repository.findAllBySubjectId(id);
+        List<PrerequisiteSubject> prerequisite = repository.findAllBySubjectId(id);
         Set<Subject> exploredSet = new HashSet<>();
-        while (!prerequisiteSubjects.isEmpty()) {
-            List<Subject> exploredSubjects = prerequisiteSubjects.stream()
+        while (!prerequisite.isEmpty()) {
+            List<Subject> exploredSubjects = prerequisite.stream()
                     .map(PrerequisiteSubject::getPrerequisite)
                     .collect(Collectors.toList());
             exploredSet.addAll(exploredSubjects);
-            List<Long> prerequisiteIds = exploredSubjects.stream()
-                    .map(Subject::getId)
-                    .collect(Collectors.toList());
-            prerequisiteSubjects = repository.findAllBySubjectIdIn(prerequisiteIds);
+            List<Long> prerequisiteIds = ManagedModelUtils.convertToLongList(exploredSubjects);
+            prerequisite = repository.findAllBySubjectIdIn(prerequisiteIds);
         }
         return exploredSet;
     }

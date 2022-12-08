@@ -8,11 +8,11 @@ import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 import uit.edu.vn.universitymanagement.repository.AccountRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
+import uit.edu.vn.universitymanagement.util.ManagedModelUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -60,7 +60,7 @@ public class SimpleAccountService extends AbstractCrudService<Account, AccountRe
 
     @Override
     public List<Account> update(Authentication authentication, List<Account> objects) {
-        List<Account> accounts = repository.findAllByIdIn(objects.stream().map(Account::getId).collect(Collectors.toList()));
+        List<Account> accounts = repository.findAllByIdIn(ManagedModelUtils.convertToLongList(objects));
         Map<Account, String> pwMap = new HashMap<>();
         for (Account account : accounts) {
             pwMap.put(account, account.getPassword());
