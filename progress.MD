@@ -18,4 +18,6 @@ WIP features:
 
 Planning features:
 * Real-time chatting between users
-* Search feature to search Faculty, Major, Subject, Teacher, Student
+* Search feature to search Faculty, Major, Subject, Teacher, Student, Employee
+* Schedule
+* Infrastructure management
