@@ -15,3 +15,7 @@ WIP features:
 * Student
 * Grade
 * Employee
+
+Planning features:
+* Real-time chatting between users
+* Search feature to search Faculty, Major, Subject, Teacher, Student
