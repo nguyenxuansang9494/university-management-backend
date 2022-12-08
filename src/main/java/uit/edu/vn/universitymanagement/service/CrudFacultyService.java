@@ -5,7 +5,7 @@ import uit.edu.vn.universitymanagement.model.entity.Faculty;
 import uit.edu.vn.universitymanagement.repository.FacultyRepository;
 
 @Service
-public class CrudFacultyService extends AbstractCrudService<Faculty, FacultyRepository> {
+public class CrudFacultyService extends AbstractCrudService<Faculty> {
     public CrudFacultyService(FacultyRepository repository) {
         super(repository);
     }

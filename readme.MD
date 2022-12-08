@@ -16,8 +16,7 @@ This is my project for Java technology subject at University of Information Tech
 
 ##### Subject dependency problem.
 The system should behave like following expectations when it handles subjects and their prerequisite subjects:
-* when a subject is added into a curriculum, all of its prerequisite subjects must also be added into the curriculum.
-* when a subject is removed from a curriculum, all subjects depend on it should also be deleted.
-* when a subject is removed from a curriculum, it is optional to remove its dependencies which are not other subjects' dependency.
-* a cycle of prerequisite subjects is not allowed.
+* A subject is only allowed to be added into a curriculum if all of its prerequisite subject are in the curriculum.
+* A subject is only allowed to be removed from a curriculum if all of its dependants are removed from the curriculum.
+* A cycle of prerequisite subjects is not allowed.
 

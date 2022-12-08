@@ -4,14 +4,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.AccountDto;
 import uit.edu.vn.universitymanagement.model.entity.Account;
-import uit.edu.vn.universitymanagement.repository.AccountRepository;
-import uit.edu.vn.universitymanagement.service.AccountCrudService;
+import uit.edu.vn.universitymanagement.service.AbstractCrudService;
 import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 
 @RestController
 @RequestMapping("/api/account")
-public class SimpleAccountController extends AbstractCrudController<Account, AccountDto, AccountCrudService, AccountRepository> {
-    public SimpleAccountController(ModelMapperWrapper modelMapperWrapper, AccountCrudService service) {
+public class AccountController extends AbstractCrudController<Account, AccountDto> {
+    public AccountController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Account> service) {
         super(modelMapperWrapper, service, Account.class, AccountDto.class);
     }
 }

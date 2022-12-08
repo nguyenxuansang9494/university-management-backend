@@ -9,7 +9,7 @@ import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
 import java.util.List;
 
 @Service
-public class CrudPrerequisiteSubjectService extends AbstractCrudService<PrerequisiteSubject, PrerequisiteSubjectRepository> {
+public class CrudPrerequisiteSubjectService extends AbstractCrudService<PrerequisiteSubject> {
     public final PrerequisiteSubjectLogicService prerequisiteSubjectLogicService;
     public CrudPrerequisiteSubjectService(PrerequisiteSubjectRepository repository, PrerequisiteSubjectLogicService prerequisiteSubjectLogicService) {
         super(repository);

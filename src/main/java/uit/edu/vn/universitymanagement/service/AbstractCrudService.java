@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class AbstractCrudService<T extends ManagedModel, U extends CommonJpaRepository<T, Long>> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
-    final U repository;
+public abstract class AbstractCrudService<T extends ManagedModel> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
+    final CommonJpaRepository<T,Long> repository;
 
     @Override
     @Transactional(rollbackFor = {Exception.class})

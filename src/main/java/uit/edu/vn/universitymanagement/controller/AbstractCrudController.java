@@ -13,19 +13,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import uit.edu.vn.universitymanagement.dto.QueryByIdDto;
 import uit.edu.vn.universitymanagement.model.ManagedModel;
-import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
 import uit.edu.vn.universitymanagement.service.AbstractCrudService;
 import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class AbstractCrudController<T extends ManagedModel, U, V extends AbstractCrudService<T, W>, W extends CommonJpaRepository<T, Long>> {
-    // T is the entity class, U is the dto class, v is the service class, and w is the repository class. We need 4 type parameters so that we can specify exactly
-    // service type that we want to use in the child controller classes, which help us not have to cast an abstract generic service to a specific one before
-    // invoking its method
+public abstract class AbstractCrudController<T extends ManagedModel, U> {
     final ModelMapperWrapper modelMapperWrapper;
-    final V service;
+    final AbstractCrudService<T> service;
     private final Class<T> tClass;
     private final Class<U> dtoClass;
 
