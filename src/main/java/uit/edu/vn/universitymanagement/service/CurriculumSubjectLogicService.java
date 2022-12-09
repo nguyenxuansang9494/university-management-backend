@@ -20,13 +20,14 @@ import java.util.stream.Collectors;
 public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubject> {
     private final CurriculumSubjectRepository curriculumSubjectRepository;
     private final PrerequisiteSubjectRepository prerequisiteSubjectRepository;
-    public boolean isAddable(CurriculumSubject curriculumSubject) {
-        List<Long> prerequisiteSubjects = prerequisiteSubjectRepository.findAllBySubjectId(curriculumSubject.getSubject().getId())
+
+    public boolean isAddable(CurriculumSubject curriculumSubject, List<PrerequisiteSubject> prerequisiteSubjects) {
+        Set<Long> prerequisiteSubjectIds = prerequisiteSubjects
                 .stream()
                 .map(PrerequisiteSubject::getPrerequisite)
                 .map(Subject::getId)
-                .collect(Collectors.toList());
-        return curriculumSubjectRepository.existsAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), prerequisiteSubjects);
+                .collect(Collectors.toSet());
+        return curriculumSubjectRepository.countAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), new ArrayList<>(prerequisiteSubjectIds)) == prerequisiteSubjectIds.size();
     }
 
     public boolean isAddable(List<CurriculumSubject> curriculumSubjects) {
@@ -39,11 +40,11 @@ public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubje
                 .map(PrerequisiteSubject::getPrerequisite)
                 .map(Subject::getId)
                 .collect(Collectors.toSet());
-        List<Long> curriculumIds = curriculumSubjects.stream()
+        Set<Long> curriculumIds = curriculumSubjects.stream()
                 .map(CurriculumSubject::getCurriculum)
                 .map(Curriculum::getId)
-                .collect(Collectors.toList());
-        Set<Long> existedInCurSubject = curriculumSubjectRepository.findAllByCurriculumIdInAndSubjectIdIn(curriculumIds, new ArrayList<>(prerequisites))
+                .collect(Collectors.toSet());
+        Set<Long> existedInCurSubject = curriculumSubjectRepository.findAllByCurriculumIdInAndSubjectIdIn(new ArrayList<>(curriculumIds), new ArrayList<>(prerequisites))
                 .stream()
                 .map(CurriculumSubject::getSubject)
                 .map(Subject::getId)
@@ -55,21 +56,38 @@ public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubje
     }
 
     public boolean isDeletable(CurriculumSubject curriculumSubject) {
-        List<Long> dependantIds = prerequisiteSubjectRepository.findAllByPrerequisiteId(curriculumSubject.getSubject().getId())
+        Set<Long> dependantIds = prerequisiteSubjectRepository.findAllByPrerequisiteId(curriculumSubject.getSubject().getId())
                 .stream()
                 .map(PrerequisiteSubject::getSubject)
                 .map(Subject::getId)
-                .collect(Collectors.toList());
-        return !curriculumSubjectRepository.existsAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), dependantIds);
+                .collect(Collectors.toSet());
+        return curriculumSubjectRepository.countAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), new ArrayList<>(dependantIds)) == 0;
     }
 
-    public void updatePrerequisiteSubjects(CurriculumSubject curriculumSubject) {
-        List<Long> prerequisiteIds = prerequisiteSubjectRepository.findAllBySubjectId(curriculumSubject.getSubject().getId())
+
+    public boolean isDeletable(List<CurriculumSubject> curriculumSubjects) {
+        Set<Long> ids = curriculumSubjects.stream()
+                .map(CurriculumSubject::getSubject)
+                .map(Subject::getId)
+                .collect(Collectors.toSet());
+        Set<Long> curIds = curriculumSubjects.stream()
+                .map(CurriculumSubject::getId)
+                .collect(Collectors.toSet());
+        Set<Long> dependantIds = prerequisiteSubjectRepository.findAllByPrerequisiteIdIn(new ArrayList<>(ids))
+                .stream()
+                .map(PrerequisiteSubject::getSubject)
+                .map(Subject::getId)
+                .collect(Collectors.toSet());
+        return curriculumSubjectRepository.countAllByCurriculumIdInAndSubjectIdIn(new ArrayList<>(curIds), new ArrayList<>(dependantIds)) == 0;
+    }
+
+    public void updatePrerequisiteSubjects(CurriculumSubject curriculumSubject, List<PrerequisiteSubject> prerequisiteSubjects) {
+        Set<Long> prerequisiteIds = prerequisiteSubjects
                 .stream()
                 .map(PrerequisiteSubject::getPrerequisite)
                 .map(Subject::getId)
-                .collect(Collectors.toList());
-        List<CurriculumSubject> curriculumSubjects = curriculumSubjectRepository.findAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), prerequisiteIds);
+                .collect(Collectors.toSet());
+        List<CurriculumSubject> curriculumSubjects = curriculumSubjectRepository.findAllByCurriculumIdAndSubjectIdIn(curriculumSubject.getCurriculum().getId(), new ArrayList<>(prerequisiteIds));
         curriculumSubjects.forEach(e -> e.setOptional(e.isOptional() && curriculumSubject.isOptional()));
         curriculumSubjectRepository.saveAll(curriculumSubjects);
     }

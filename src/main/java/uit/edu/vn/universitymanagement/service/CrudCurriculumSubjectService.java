@@ -5,26 +5,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uit.edu.vn.universitymanagement.exception.FailedToDeleteRequiredSubjectException;
 import uit.edu.vn.universitymanagement.exception.MissingPrerequisiteSubjectException;
-import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
 import uit.edu.vn.universitymanagement.model.entity.CurriculumSubject;
+import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
+import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
 
 import java.util.List;
 
 @Service
 public class CrudCurriculumSubjectService extends AbstractCrudService<CurriculumSubject> {
     private final CurriculumSubjectLogicService curriculumSubjectLogicService;
+    private final PrerequisiteSubjectRepository prerequisiteSubjectRepository;
 
-    public CrudCurriculumSubjectService(CommonJpaRepository<CurriculumSubject, Long> repository, CurriculumSubjectLogicService curriculumSubjectLogicService) {
+    public CrudCurriculumSubjectService(CommonJpaRepository<CurriculumSubject, Long> repository, CurriculumSubjectLogicService curriculumSubjectLogicService, PrerequisiteSubjectRepository prerequisiteSubjectRepository) {
         super(repository);
         this.curriculumSubjectLogicService = curriculumSubjectLogicService;
+        this.prerequisiteSubjectRepository = prerequisiteSubjectRepository;
     }
 
     @Override
     @Transactional
     public CurriculumSubject create(Authentication authentication, CurriculumSubject object) {
-        if (curriculumSubjectLogicService.isAddable(object)) {
-            curriculumSubjectLogicService.updatePrerequisiteSubjects(object);
+        List<PrerequisiteSubject> prerequisiteSubjects = prerequisiteSubjectRepository.findAllBySubjectId(object.getSubject().getId());
+        if (curriculumSubjectLogicService.isAddable(object, prerequisiteSubjects)) {
+            curriculumSubjectLogicService.updatePrerequisiteSubjects(object, prerequisiteSubjects);
             return super.create(authentication, object);
         }
         throw new MissingPrerequisiteSubjectException();
@@ -33,14 +37,17 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     @Override
     @Transactional
     public CurriculumSubject update(Authentication authentication, CurriculumSubject object) {
-        delete(authentication, object);
+        delete(authentication, object.getId());
         return create(authentication, object);
     }
 
     @Override
-    public void delete(Authentication authentication, Long id) {
-        final CurriculumSubject deletedObject = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        delete(authentication, deletedObject);
+    @Transactional
+    public CurriculumSubject delete(Authentication authentication, Long id) {
+        CurriculumSubject curriculumSubject = super.delete(authentication, id);
+        if (!curriculumSubjectLogicService.isDeletable(curriculumSubject))
+            throw new FailedToDeleteRequiredSubjectException();
+        return curriculumSubject;
     }
 
     @Override
@@ -54,15 +61,11 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     }
 
     @Override
-    public void delete(Authentication authentication, List<Long> ids) {
-        super.delete(authentication, ids);
-    }
-
-
-    public void delete(Authentication authentication, CurriculumSubject deletedObject) {
-        if (curriculumSubjectLogicService.isDeletable(deletedObject))
-            super.delete(authentication, deletedObject.getId());
-        else
+    @Transactional
+    public List<CurriculumSubject> delete(Authentication authentication, List<Long> ids) {
+        List<CurriculumSubject> curriculumSubjects = super.delete(authentication, ids);
+        if (!curriculumSubjectLogicService.isDeletable(curriculumSubjects))
             throw new FailedToDeleteRequiredSubjectException();
+        return curriculumSubjects;
     }
 }

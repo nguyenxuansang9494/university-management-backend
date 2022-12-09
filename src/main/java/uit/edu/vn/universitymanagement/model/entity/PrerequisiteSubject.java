@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uit.edu.vn.universitymanagement.model.ManagedModel;
+import uit.edu.vn.universitymanagement.model.AbstractEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
 
 import javax.persistence.Embedded;
@@ -27,7 +27,7 @@ import javax.persistence.UniqueConstraint;
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"subject_id", "prerequisite_id"})
         })
-public class PrerequisiteSubject implements ManagedModel {
+public class PrerequisiteSubject extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prerequisite_subject_gen")
     @SequenceGenerator(name = "prerequisite_subject_gen", allocationSize = 100)

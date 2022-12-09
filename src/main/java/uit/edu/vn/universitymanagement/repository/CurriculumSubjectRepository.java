@@ -9,6 +9,6 @@ import java.util.List;
 public interface CurriculumSubjectRepository extends CommonJpaRepository<CurriculumSubject, Long> {
     List<CurriculumSubject> findAllByCurriculumIdAndSubjectIdIn(Long curriculumId, List<Long> subjectId);
     List<CurriculumSubject> findAllByCurriculumIdInAndSubjectIdIn(List<Long> curIds, List<Long> subIds);
-    List<CurriculumSubject> findAllByCurriculumAndSubjectIn(Curriculum curriculum, List<Subject> subjects);
-    boolean existsAllByCurriculumIdAndSubjectIdIn(Long curriculumId, List<Long> subjectIds);
+    int countAllByCurriculumIdAndSubjectIdIn(Long curriculumId, List<Long> subjectIds);
+    int countAllByCurriculumIdInAndSubjectIdIn(List<Long> curriculumIds, List<Long> subjectIds);
 }

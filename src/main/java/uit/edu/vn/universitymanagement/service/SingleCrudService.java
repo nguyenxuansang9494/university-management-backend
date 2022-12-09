@@ -10,5 +10,5 @@ public interface SingleCrudService<T extends ManagedModel> {
 
     T update(Authentication authentication, T object);
 
-    void delete(Authentication authentication, Long id);
+    T delete(Authentication authentication, Long id);
 }

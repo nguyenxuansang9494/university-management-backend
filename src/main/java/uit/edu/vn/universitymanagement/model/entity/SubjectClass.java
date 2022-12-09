@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uit.edu.vn.universitymanagement.model.ManagedModel;
+import uit.edu.vn.universitymanagement.model.AbstractEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.Term;
 
@@ -22,7 +22,7 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class SubjectClass implements ManagedModel {
+public class SubjectClass extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subject_class_id_seq")

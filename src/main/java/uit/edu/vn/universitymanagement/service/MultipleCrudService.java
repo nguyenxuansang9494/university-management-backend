@@ -15,5 +15,5 @@ public interface MultipleCrudService<T extends ManagedModel> {
 
     List<T> update(Authentication authentication, List<T> objects);
 
-    void delete(Authentication authentication, List<Long> ids);
+    List<T> delete(Authentication authentication, List<Long> ids);
 }

@@ -65,12 +65,13 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void delete(Authentication authentication, Long id) {
+    public T delete(Authentication authentication, Long id) {
         T object = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
         repository.deleteById(id);
         if (!authorize(authentication, ActionType.WRITE, object)) {
             throw new PermissionDeniedException();
         }
+        return object;
     }
 
     @Override
@@ -133,7 +134,7 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void delete(Authentication authentication, List<Long> ids) {
+    public List<T> delete(Authentication authentication, List<Long> ids) {
         List<T> objects = repository.findAllByIdIn(ids);
         if (objects.size() < ids.size()) {
             throw new ResourceNotFoundException();
@@ -142,5 +143,6 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
         if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
             throw new PermissionDeniedException();
         }
+        return objects;
     }
 }
