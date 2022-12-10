@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uit.edu.vn.universitymanagement.model.AbstractEntity;
 import uit.edu.vn.universitymanagement.model.Metadata;
-import uit.edu.vn.universitymanagement.model.Role;
+import uit.edu.vn.universitymanagement.authorization.Role;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;

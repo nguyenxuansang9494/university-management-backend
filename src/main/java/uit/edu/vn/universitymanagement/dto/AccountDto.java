@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uit.edu.vn.universitymanagement.model.Role;
+import uit.edu.vn.universitymanagement.authorization.Role;
 
 import java.util.Set;
 

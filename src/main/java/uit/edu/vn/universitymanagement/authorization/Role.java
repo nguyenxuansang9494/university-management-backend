@@ -1,4 +1,4 @@
-package uit.edu.vn.universitymanagement.model;
+package uit.edu.vn.universitymanagement.authorization;
 
 import org.springframework.security.core.GrantedAuthority;
 

@@ -1,7 +1,6 @@
 package uit.edu.vn.universitymanagement.authorization;
 
 import org.springframework.security.core.Authentication;
-import uit.edu.vn.universitymanagement.model.Role;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
 
