@@ -5,12 +5,12 @@
 * Major
 * Curriculum
 * Subject
+* Prerequisite subject
 
 #### Features need to be tested more:
-* Prerequisite subject
-* Curriculum - Subject
 
 #### WIP features:
+* Curriculum - Subject
 * Teacher
 * Student
 * Grade
