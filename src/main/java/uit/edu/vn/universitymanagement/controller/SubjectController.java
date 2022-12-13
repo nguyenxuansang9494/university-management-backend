@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uit.edu.vn.universitymanagement.dto.PrerequisiteSubjectDto;
 import uit.edu.vn.universitymanagement.dto.SubjectDto;
@@ -20,19 +21,34 @@ import java.util.List;
 @RequestMapping("/api/subject")
 public class SubjectController extends AbstractCrudController<Subject, SubjectDto> {
     private final PrerequisiteSubjectLogicService prerequisiteSubjectLogicService;
+
     public SubjectController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Subject> service, PrerequisiteSubjectLogicService prerequisiteSubjectLogicService) {
         super(modelMapperWrapper, service, Subject.class, SubjectDto.class);
         this.prerequisiteSubjectLogicService = prerequisiteSubjectLogicService;
     }
 
     @GetMapping("/dependency/{id}")
-    public ResponseEntity<List<PrerequisiteSubjectDto>> findPrerequisiteBySubjectId(Authentication authentication, @PathVariable("id") Long id) {
+    public ResponseEntity<List<PrerequisiteSubjectDto>> findPrerequisiteBySubjectId(
+            Authentication authentication,
+            @PathVariable("id") Long id,
+            @RequestParam(name = "recursive", required = false, defaultValue = "false") boolean isRecursive
+    ) {
+        if (isRecursive) {
+            return ResponseEntity.ok(modelMapperWrapper.mapList(prerequisiteSubjectLogicService.explorePrerequisite(id), PrerequisiteSubjectDto.class));
+        }
         List<PrerequisiteSubject> prerequisiteSubjects = prerequisiteSubjectLogicService.findBySubjectId(authentication, id);
         return ResponseEntity.ok(modelMapperWrapper.mapList(prerequisiteSubjects, PrerequisiteSubjectDto.class));
     }
 
     @GetMapping("/dependant/{id}")
-    public ResponseEntity<List<PrerequisiteSubjectDto>> findDependantByPrerequisiteId(Authentication authentication, @PathVariable("id") Long id) {
+    public ResponseEntity<List<PrerequisiteSubjectDto>> findDependantByPrerequisiteId(
+            Authentication authentication,
+            @PathVariable("id") Long id,
+            @RequestParam(name = "recursive", required = false, defaultValue = "false") boolean isRecursive
+    ) {
+        if (isRecursive) {
+            return ResponseEntity.ok(modelMapperWrapper.mapList(prerequisiteSubjectLogicService.exploreDependants(id), PrerequisiteSubjectDto.class));
+        }
         List<PrerequisiteSubject> prerequisiteSubjects = prerequisiteSubjectLogicService.findByPrerequisiteId(authentication, id);
         return ResponseEntity.ok(modelMapperWrapper.mapList(prerequisiteSubjects, PrerequisiteSubjectDto.class));
     }

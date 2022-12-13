@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class ModelMapperWrapper {
     private final ModelMapper modelMapper;
 
-    public <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
+    public <S, T> List<T> mapList(Collection<S> source, Class<T> targetClass) {
         return source
                 .stream()
                 .map(element -> modelMapper.map(element, targetClass))
@@ -29,4 +30,5 @@ public class ModelMapperWrapper {
                 .map(element -> modelMapper.map(element, targetClass))
                 .collect(Collectors.toList()), source.getPageable(), source.getTotalElements());
     }
+
 }

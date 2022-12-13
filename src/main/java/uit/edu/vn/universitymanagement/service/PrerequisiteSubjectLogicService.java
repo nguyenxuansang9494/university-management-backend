@@ -39,10 +39,6 @@ public class PrerequisiteSubjectLogicService implements Authorizer<PrerequisiteS
 
     public Set<Subject> exploreDependants(Long id) {
         List<PrerequisiteSubject> dependants = repository.findAllByPrerequisiteId(id);
-        return getDependantSubjects(dependants);
-    }
-
-    private Set<Subject> getDependantSubjects(List<PrerequisiteSubject> dependants) {
         Set<Subject> exploredSet = new HashSet<>();
         while (!dependants.isEmpty()) {
             List<Subject> subjects = dependants.stream()
@@ -53,10 +49,6 @@ public class PrerequisiteSubjectLogicService implements Authorizer<PrerequisiteS
             dependants = repository.findAllByPrerequisiteIdIn(ids);
         }
         return exploredSet;
-    }
-
-    public Set<Subject> explorePrerequisite(Subject subject) {
-        return explorePrerequisite(subject.getId());
     }
 
     public Set<Subject> explorePrerequisite(Long id) {
@@ -74,7 +66,7 @@ public class PrerequisiteSubjectLogicService implements Authorizer<PrerequisiteS
     }
 
     public boolean checkCyclicDependency(PrerequisiteSubject object) {
-        Set<Long> exploredPrerequisiteSubjectIds = explorePrerequisite(object.getPrerequisite()).stream()
+        Set<Long> exploredPrerequisiteSubjectIds = explorePrerequisite(object.getPrerequisite().getId()).stream()
                 .map(Subject::getId)
                 .collect(Collectors.toSet());
         return exploredPrerequisiteSubjectIds.contains(object.getSubject().getId());
