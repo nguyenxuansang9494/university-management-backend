@@ -8,8 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import uit.edu.vn.universitymanagement.authorization.ActionType;
 import uit.edu.vn.universitymanagement.authorization.Authorizer;
-import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
-import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
+import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
+import uit.edu.vn.universitymanagement.exception.ErrorType;
 import uit.edu.vn.universitymanagement.model.ManagedModel;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
@@ -22,13 +22,13 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public abstract class AbstractCrudService<T extends ManagedModel> implements SingleCrudService<T>, MultipleCrudService<T>, Authorizer<T> {
-    final CommonJpaRepository<T,Long> repository;
+    final CommonJpaRepository<T, Long> repository;
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public T create(Authentication authentication, T object) {
         if (!authorize(authentication, ActionType.WRITE, object)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         object.setId(null);
         object.setMetadata(new Metadata());
@@ -41,9 +41,11 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     @Transactional(rollbackFor = {Exception.class})
     public T read(Authentication authentication, Long id) {
         Optional<T> optionalT = repository.findById(id);
-        T object = optionalT.orElseThrow(ResourceNotFoundException::new);
+        T object = optionalT.orElseThrow(() -> {
+            throw new CommonRuntimeException(ErrorType.NOT_FOUND);
+        });
         if (!authorize(authentication, ActionType.READ, object)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return object;
     }
@@ -52,10 +54,10 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     @Transactional(rollbackFor = {Exception.class})
     public T update(Authentication authentication, T object) {
         if (!authorize(authentication, ActionType.WRITE, object)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         if (!repository.existsById(object.getId())) {
-            throw new ResourceNotFoundException();
+            throw new CommonRuntimeException(ErrorType.NOT_FOUND);
         }
         object.setMetadata(new Metadata());
         object.getMetadata().setLastModifier(AuthenticationUtils.getAccount(authentication));
@@ -66,10 +68,12 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public T delete(Authentication authentication, Long id) {
-        T object = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        T object = repository.findById(id).orElseThrow(() -> {
+            throw new CommonRuntimeException(ErrorType.NOT_FOUND);
+        });
         repository.deleteById(id);
         if (!authorize(authentication, ActionType.WRITE, object)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return object;
     }
@@ -84,7 +88,7 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
             obj.getMetadata().setModifiedAt(new Date());
         });
         if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return repository.saveAll(objects);
     }
@@ -98,7 +102,7 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
             objects = repository.findAll(pageable);
         }
         if (!batchAuthorize(authentication, ActionType.READ, objects.getContent())) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return objects;
     }
@@ -108,7 +112,7 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     public List<T> read(Authentication authentication, List<Long> ids) {
         List<T> objects = repository.findAllByIdIn(ids);
         if (!batchAuthorize(authentication, ActionType.READ, objects)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return objects;
     }
@@ -117,12 +121,12 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     @Transactional(rollbackFor = {Exception.class})
     public List<T> update(Authentication authentication, List<T> objects) {
         if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         List<Long> ids = ManagedModelUtils.convertToLongList(objects);
 
         if (repository.countByIdIn(ids) != objects.size()) {
-            throw new ResourceNotFoundException();
+            throw new CommonRuntimeException(ErrorType.NOT_FOUND);
         }
         for (T object : objects) {
             object.setMetadata(new Metadata());
@@ -137,11 +141,11 @@ public abstract class AbstractCrudService<T extends ManagedModel> implements Sin
     public List<T> delete(Authentication authentication, List<Long> ids) {
         List<T> objects = repository.findAllByIdIn(ids);
         if (objects.size() < ids.size()) {
-            throw new ResourceNotFoundException();
+            throw new CommonRuntimeException(ErrorType.NOT_FOUND);
         }
         repository.deleteByIdIn(ids);
         if (!batchAuthorize(authentication, ActionType.WRITE, objects)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return objects;
     }

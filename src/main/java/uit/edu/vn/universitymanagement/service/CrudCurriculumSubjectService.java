@@ -3,8 +3,8 @@ package uit.edu.vn.universitymanagement.service;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uit.edu.vn.universitymanagement.exception.FailedToDeleteRequiredSubjectException;
-import uit.edu.vn.universitymanagement.exception.MissingPrerequisiteSubjectException;
+import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
+import uit.edu.vn.universitymanagement.exception.ErrorType;
 import uit.edu.vn.universitymanagement.model.entity.CurriculumSubject;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;
@@ -37,7 +37,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
             curriculumSubjectLogicService.updatePrerequisiteSubjects(object, prerequisiteSubjects);
             return super.create(authentication, object);
         }
-        throw new MissingPrerequisiteSubjectException();
+        throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "prerequisite subjects are missed");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     public CurriculumSubject delete(Authentication authentication, Long id) {
         CurriculumSubject curriculumSubject = super.delete(authentication, id);
         if (!curriculumSubjectLogicService.isDeletable(curriculumSubject))
-            throw new FailedToDeleteRequiredSubjectException();
+            throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "subject is required");
         return curriculumSubject;
     }
 
@@ -73,7 +73,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
                 .collect(Collectors.toList());
         List<CurriculumSubject> existedCurSub = ((CurriculumSubjectRepository) repository).findAllByCurriculumIdAndSubjectIdIn(curriculumId, prerequisiteIds);
         if (!curriculumSubjectLogicService.isAddable(objects, existedCurSub, prerequisiteSubjects)) {
-            throw new IllegalArgumentException();
+            throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "prerequisite subjects are missed");
         }
         curriculumSubjectLogicService.updatePrerequisiteSubjects(objects, existedCurSub, prerequisiteSubjects);
         return super.create(authentication, objects);
@@ -92,7 +92,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     public List<CurriculumSubject> delete(Authentication authentication, List<Long> ids) {
         List<CurriculumSubject> curriculumSubjects = super.delete(authentication, ids);
         if (!curriculumSubjectLogicService.isDeletable(curriculumSubjects))
-            throw new FailedToDeleteRequiredSubjectException();
+            throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "subjects are required");
         return curriculumSubjects;
     }
 }

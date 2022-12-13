@@ -5,7 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import uit.edu.vn.universitymanagement.authorization.ActionType;
 import uit.edu.vn.universitymanagement.authorization.Authorizer;
-import uit.edu.vn.universitymanagement.exception.PermissionDeniedException;
+import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
+import uit.edu.vn.universitymanagement.exception.ErrorType;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;
 import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
@@ -24,14 +25,14 @@ public class PrerequisiteSubjectLogicService implements Authorizer<PrerequisiteS
 
     public List<PrerequisiteSubject> findBySubjectId(Authentication authentication, Long id) {
         if (!authorize(authentication, ActionType.READ, null)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return repository.findAllBySubjectId(id);
     }
 
     public List<PrerequisiteSubject> findByPrerequisiteId(Authentication authentication, Long id) {
         if (!authorize(authentication, ActionType.READ, null)) {
-            throw new PermissionDeniedException();
+            throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
         }
         return repository.findAllByPrerequisiteId(id);
     }

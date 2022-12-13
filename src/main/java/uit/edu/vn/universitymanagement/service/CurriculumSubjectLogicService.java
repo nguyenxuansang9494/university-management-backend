@@ -3,6 +3,8 @@ package uit.edu.vn.universitymanagement.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uit.edu.vn.universitymanagement.authorization.Authorizer;
+import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
+import uit.edu.vn.universitymanagement.exception.ErrorType;
 import uit.edu.vn.universitymanagement.model.entity.CurriculumSubject;
 import uit.edu.vn.universitymanagement.model.entity.PrerequisiteSubject;
 import uit.edu.vn.universitymanagement.model.entity.Subject;
@@ -33,7 +35,7 @@ public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubje
     public boolean isAddable(List<CurriculumSubject> addedCurriculumSubjects, List<CurriculumSubject> existedCurSub, Set<PrerequisiteSubject> prerequisiteSubjects) {
         for (CurriculumSubject cur : addedCurriculumSubjects) {
             if (!Objects.equals(cur.getCurriculum().getId(), addedCurriculumSubjects.get(0).getCurriculum().getId()))
-                return false;
+                throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "more than one curriculum");
         }
         Set<Long> addedSubjects = addedCurriculumSubjects.stream()
                 .map(CurriculumSubject::getSubject)

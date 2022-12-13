@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import uit.edu.vn.universitymanagement.authorization.ActionType;
 import uit.edu.vn.universitymanagement.authorization.Authorizer;
 import uit.edu.vn.universitymanagement.authorization.Role;
-import uit.edu.vn.universitymanagement.exception.ResourceNotFoundException;
+import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
+import uit.edu.vn.universitymanagement.exception.ErrorType;
 import uit.edu.vn.universitymanagement.model.entity.Account;
 import uit.edu.vn.universitymanagement.repository.AccountRepository;
 import uit.edu.vn.universitymanagement.util.AuthenticationUtils;
@@ -46,7 +47,9 @@ public class CrudAccountService extends AbstractCrudService<Account> {
         if (object.getPassword() != null) {
             object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
         } else {
-            Account updatedObject = repository.findById(object.getId()).orElseThrow(ResourceNotFoundException::new);
+            Account updatedObject = repository.findById(object.getId()).orElseThrow(() -> {
+                throw new CommonRuntimeException(ErrorType.NOT_FOUND);
+            });
             object.setPassword(updatedObject.getPassword());
         }
         return super.update(authentication, object);
