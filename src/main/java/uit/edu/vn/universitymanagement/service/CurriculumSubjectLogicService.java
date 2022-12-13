@@ -31,8 +31,6 @@ public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubje
     }
 
     public boolean isAddable(List<CurriculumSubject> addedCurriculumSubjects, List<CurriculumSubject> existedCurSub, Set<PrerequisiteSubject> prerequisiteSubjects) {
-        if (addedCurriculumSubjects.isEmpty())
-            return false;
         for (CurriculumSubject cur : addedCurriculumSubjects) {
             if (!Objects.equals(cur.getCurriculum().getId(), addedCurriculumSubjects.get(0).getCurriculum().getId()))
                 return false;

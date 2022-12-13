@@ -13,11 +13,8 @@ import uit.edu.vn.universitymanagement.repository.CurriculumSubjectRepository;
 import uit.edu.vn.universitymanagement.repository.PrerequisiteSubjectRepository;
 import uit.edu.vn.universitymanagement.util.ManagedModelUtils;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,32 +59,24 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     @Override
     @Transactional
     public List<CurriculumSubject> create(Authentication authentication, List<CurriculumSubject> objects) {
-        Map<Long, List<CurriculumSubject>> curMap = new HashMap<>();
-        List<CurriculumSubject> result = new LinkedList<>();
-        for (CurriculumSubject object : objects) {
-            if (!curMap.containsKey(object.getCurriculum().getId())) {
-                curMap.put(object.getCurriculum().getId(), new LinkedList<>());
-            }
-            curMap.get(object.getCurriculum().getId()).add(object);
+        if (objects.isEmpty())
+            return objects;
+        Long curriculumId = objects.get(0).getCurriculum().getId();
+        List<Long> subjectIds = objects.stream()
+                .map(CurriculumSubject::getSubject)
+                .map(Subject::getId)
+                .collect(Collectors.toList());
+        Set<PrerequisiteSubject> prerequisiteSubjects = new HashSet<>(prerequisiteSubjectRepository.findAllBySubjectIdIn(subjectIds));
+        List<Long> prerequisiteIds = prerequisiteSubjects.stream()
+                .map(PrerequisiteSubject::getPrerequisite)
+                .map(Subject::getId)
+                .collect(Collectors.toList());
+        List<CurriculumSubject> existedCurSub = ((CurriculumSubjectRepository) repository).findAllByCurriculumIdAndSubjectIdIn(curriculumId, prerequisiteIds);
+        if (!curriculumSubjectLogicService.isAddable(objects, existedCurSub, prerequisiteSubjects)) {
+            throw new IllegalArgumentException();
         }
-        for (Map.Entry<Long, List<CurriculumSubject>> entry : curMap.entrySet()) {
-            List<CurriculumSubject> curSubs = entry.getValue();
-            List<Long> subjectIds = curSubs.stream()
-                    .map(CurriculumSubject::getSubject)
-                    .map(Subject::getId)
-                    .collect(Collectors.toList());
-            Set<PrerequisiteSubject> prerequisiteSubjects = new HashSet<>(prerequisiteSubjectRepository.findAllBySubjectIdIn(subjectIds));
-            List<Long> prerequisiteIds = prerequisiteSubjects.stream()
-                    .map(PrerequisiteSubject::getPrerequisite)
-                    .map(Subject::getId)
-                    .collect(Collectors.toList());
-            List<CurriculumSubject> existedCurSubs = ((CurriculumSubjectRepository) repository).findAllByCurriculumIdAndSubjectIdIn(entry.getKey(), prerequisiteIds);
-            if (!curriculumSubjectLogicService.isAddable(curSubs, existedCurSubs, prerequisiteSubjects))
-                continue;
-            curriculumSubjectLogicService.updatePrerequisiteSubjects(curSubs, existedCurSubs, prerequisiteSubjects);
-            result.addAll(super.create(authentication, curSubs));
-        }
-        return result;
+        curriculumSubjectLogicService.updatePrerequisiteSubjects(objects, existedCurSub, prerequisiteSubjects);
+        return super.create(authentication, objects);
     }
 
     @Override
