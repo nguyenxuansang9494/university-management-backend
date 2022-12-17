@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uit.edu.vn.universitymanagement.model.AbstractEntity;
-import uit.edu.vn.universitymanagement.model.AccountOwner;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.PersonalInformation;
 
@@ -23,7 +22,7 @@ import javax.persistence.SequenceGenerator;
 @Getter
 @Setter
 @Entity
-public class Employee extends AbstractEntity implements AccountOwner {
+public class Employee extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_id_seq")

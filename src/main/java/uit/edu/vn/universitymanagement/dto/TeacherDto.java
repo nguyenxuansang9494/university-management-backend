@@ -10,9 +10,10 @@ import uit.edu.vn.universitymanagement.model.PersonalInformation;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmployeeDto {
+public class TeacherDto {
     private Long id;
     private PersonalInformation personalInformation;
     private AccountDto account;
     private MetadataDto metadata;
+    private Long facultyId;
 }
