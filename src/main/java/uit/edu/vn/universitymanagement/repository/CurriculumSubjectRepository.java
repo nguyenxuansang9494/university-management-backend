@@ -1,14 +1,15 @@
 package uit.edu.vn.universitymanagement.repository;
 
-import uit.edu.vn.universitymanagement.model.entity.Curriculum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import uit.edu.vn.universitymanagement.model.entity.CurriculumSubject;
-import uit.edu.vn.universitymanagement.model.entity.Subject;
 
 import java.util.List;
 
 public interface CurriculumSubjectRepository extends CommonJpaRepository<CurriculumSubject, Long> {
+    List<CurriculumSubject> findAllByCurriculumId(Long curriculumId);
+    Page<CurriculumSubject> findAllByCurriculumId(Long curriculumId, Pageable pageable);
     List<CurriculumSubject> findAllByCurriculumIdAndSubjectIdIn(Long curriculumId, List<Long> subjectId);
-    List<CurriculumSubject> findAllByCurriculumIdInAndSubjectIdIn(List<Long> curIds, List<Long> subIds);
     int countAllByCurriculumIdAndSubjectIdIn(Long curriculumId, List<Long> subjectIds);
     int countAllByCurriculumIdInAndSubjectIdIn(List<Long> curriculumIds, List<Long> subjectIds);
 }

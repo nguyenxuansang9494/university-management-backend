@@ -1,7 +1,12 @@
 package uit.edu.vn.universitymanagement.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import uit.edu.vn.universitymanagement.authorization.ActionType;
 import uit.edu.vn.universitymanagement.authorization.Authorizer;
 import uit.edu.vn.universitymanagement.exception.CommonRuntimeException;
 import uit.edu.vn.universitymanagement.exception.ErrorType;
@@ -19,7 +24,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubject> {
+public class LogicCurriculumSubjectService implements Authorizer<CurriculumSubject> {
     private final CurriculumSubjectRepository curriculumSubjectRepository;
     private final PrerequisiteSubjectRepository prerequisiteSubjectRepository;
 
@@ -126,5 +131,22 @@ public class CurriculumSubjectLogicService implements Authorizer<CurriculumSubje
                     .collect(Collectors.toSet());
         }
         return depth;
+    }
+
+    public Page<CurriculumSubject> getByCurriculumId(Authentication authentication, Long curId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CurriculumSubject> curSubs = curriculumSubjectRepository.findAllByCurriculumId(curId, pageable);
+        if (batchAuthorize(authentication, ActionType.READ, curSubs.getContent())) {
+            return curSubs;
+        }
+        throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
+    }
+
+    public List<CurriculumSubject> getByCurriculumId(Authentication authentication, Long curId) {
+        List<CurriculumSubject> curSubs = curriculumSubjectRepository.findAllByCurriculumId(curId);
+        if (batchAuthorize(authentication, ActionType.READ, curSubs)) {
+            return curSubs;
+        }
+        throw new CommonRuntimeException(ErrorType.PERMISSION_DENIED);
     }
 }

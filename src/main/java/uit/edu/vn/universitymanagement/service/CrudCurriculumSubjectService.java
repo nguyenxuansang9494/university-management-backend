@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class CrudCurriculumSubjectService extends AbstractCrudService<CurriculumSubject> {
-    private final CurriculumSubjectLogicService curriculumSubjectLogicService;
+    private final LogicCurriculumSubjectService logicCurriculumSubjectService;
     private final PrerequisiteSubjectRepository prerequisiteSubjectRepository;
 
-    public CrudCurriculumSubjectService(CommonJpaRepository<CurriculumSubject, Long> repository, CurriculumSubjectLogicService curriculumSubjectLogicService, PrerequisiteSubjectRepository prerequisiteSubjectRepository) {
+    public CrudCurriculumSubjectService(CommonJpaRepository<CurriculumSubject, Long> repository, LogicCurriculumSubjectService logicCurriculumSubjectService, PrerequisiteSubjectRepository prerequisiteSubjectRepository) {
         super(repository);
-        this.curriculumSubjectLogicService = curriculumSubjectLogicService;
+        this.logicCurriculumSubjectService = logicCurriculumSubjectService;
         this.prerequisiteSubjectRepository = prerequisiteSubjectRepository;
     }
 
@@ -33,8 +33,8 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     @Transactional
     public CurriculumSubject create(Authentication authentication, CurriculumSubject object) {
         List<PrerequisiteSubject> prerequisiteSubjects = prerequisiteSubjectRepository.findAllBySubjectId(object.getSubject().getId());
-        if (curriculumSubjectLogicService.isAddable(object, prerequisiteSubjects)) {
-            curriculumSubjectLogicService.updatePrerequisiteSubjects(object, prerequisiteSubjects);
+        if (logicCurriculumSubjectService.isAddable(object, prerequisiteSubjects)) {
+            logicCurriculumSubjectService.updatePrerequisiteSubjects(object, prerequisiteSubjects);
             return super.create(authentication, object);
         }
         throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "prerequisite subjects are missed");
@@ -51,7 +51,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     @Transactional
     public CurriculumSubject delete(Authentication authentication, Long id) {
         CurriculumSubject curriculumSubject = super.delete(authentication, id);
-        if (!curriculumSubjectLogicService.isDeletable(curriculumSubject))
+        if (!logicCurriculumSubjectService.isDeletable(curriculumSubject))
             throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "subject is required");
         return curriculumSubject;
     }
@@ -72,10 +72,10 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
                 .map(Subject::getId)
                 .collect(Collectors.toList());
         List<CurriculumSubject> existedCurSub = ((CurriculumSubjectRepository) repository).findAllByCurriculumIdAndSubjectIdIn(curriculumId, prerequisiteIds);
-        if (!curriculumSubjectLogicService.isAddable(objects, existedCurSub, prerequisiteSubjects)) {
+        if (!logicCurriculumSubjectService.isAddable(objects, existedCurSub, prerequisiteSubjects)) {
             throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "prerequisite subjects are missed");
         }
-        curriculumSubjectLogicService.updatePrerequisiteSubjects(objects, existedCurSub, prerequisiteSubjects);
+        logicCurriculumSubjectService.updatePrerequisiteSubjects(objects, existedCurSub, prerequisiteSubjects);
         return super.create(authentication, objects);
     }
 
@@ -91,7 +91,7 @@ public class CrudCurriculumSubjectService extends AbstractCrudService<Curriculum
     @Transactional
     public List<CurriculumSubject> delete(Authentication authentication, List<Long> ids) {
         List<CurriculumSubject> curriculumSubjects = super.delete(authentication, ids);
-        if (!curriculumSubjectLogicService.isDeletable(curriculumSubjects))
+        if (!logicCurriculumSubjectService.isDeletable(curriculumSubjects))
             throw new CommonRuntimeException(ErrorType.BAD_REQUEST, "subjects are required");
         return curriculumSubjects;
     }

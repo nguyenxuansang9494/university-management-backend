@@ -27,7 +27,7 @@ public class SubjectController extends AbstractCrudController<Subject, SubjectDt
         this.prerequisiteSubjectLogicService = prerequisiteSubjectLogicService;
     }
 
-    @GetMapping("/dependency/{id}")
+    @GetMapping("/{id}/dependency")
     public ResponseEntity<List<PrerequisiteSubjectDto>> findPrerequisiteBySubjectId(
             Authentication authentication,
             @PathVariable("id") Long id,
@@ -40,7 +40,7 @@ public class SubjectController extends AbstractCrudController<Subject, SubjectDt
         return ResponseEntity.ok(modelMapperWrapper.mapList(prerequisiteSubjects, PrerequisiteSubjectDto.class));
     }
 
-    @GetMapping("/dependant/{id}")
+    @GetMapping("/{id}/dependant")
     public ResponseEntity<List<PrerequisiteSubjectDto>> findDependantByPrerequisiteId(
             Authentication authentication,
             @PathVariable("id") Long id,
