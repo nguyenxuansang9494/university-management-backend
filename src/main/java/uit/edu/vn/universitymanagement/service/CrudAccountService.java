@@ -30,10 +30,11 @@ public class CrudAccountService extends AbstractCrudService<Account> {
     @Override
     public boolean authorize(Authentication authentication, ActionType actionType, Account object) {
         Account account = AuthenticationUtils.getAccount(authentication);
+        boolean isOwner = Authorizer.allowOwnerToWrite(authentication, actionType, account);
         if (account.getAuthorities().stream().map(Role.class::cast).map(Role::ordinal).anyMatch(e -> e >= Role.MODERATOR.ordinal())) {
-            return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.ADMINISTRATOR);
+            return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.ADMINISTRATOR) || isOwner;
         }
-        return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR);
+        return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR) || isOwner;
     }
 
     @Override

@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uit.edu.vn.universitymanagement.model.AbstractEntity;
+import uit.edu.vn.universitymanagement.model.AccountOwner;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.authorization.Role;
 
@@ -31,7 +32,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
-public class Account extends AbstractEntity implements UserDetails {
+public class Account extends AbstractEntity implements UserDetails, AccountOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
@@ -79,5 +80,10 @@ public class Account extends AbstractEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnable;
+    }
+
+    @Override
+    public Account getAccount() {
+        return this;
     }
 }

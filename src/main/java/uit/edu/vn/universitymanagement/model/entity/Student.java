@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uit.edu.vn.universitymanagement.model.AbstractEntity;
+import uit.edu.vn.universitymanagement.model.AccountOwner;
 import uit.edu.vn.universitymanagement.model.Metadata;
 import uit.edu.vn.universitymanagement.model.PersonalInfomation;
 import uit.edu.vn.universitymanagement.model.Term;
@@ -26,7 +27,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Student extends AbstractEntity {
+public class Student extends AbstractEntity implements AccountOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_id_seq")
     @SequenceGenerator(name = "student_id_seq", allocationSize = 100)
