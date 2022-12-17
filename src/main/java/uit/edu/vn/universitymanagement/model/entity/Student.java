@@ -8,7 +8,7 @@ import lombok.Setter;
 import uit.edu.vn.universitymanagement.model.AbstractEntity;
 import uit.edu.vn.universitymanagement.model.AccountOwner;
 import uit.edu.vn.universitymanagement.model.Metadata;
-import uit.edu.vn.universitymanagement.model.PersonalInfomation;
+import uit.edu.vn.universitymanagement.model.PersonalInformation;
 import uit.edu.vn.universitymanagement.model.Term;
 
 import javax.persistence.ElementCollection;
@@ -33,7 +33,7 @@ public class Student extends AbstractEntity implements AccountOwner {
     @SequenceGenerator(name = "student_id_seq", allocationSize = 100)
     private Long id;
     @Embedded
-    private PersonalInfomation personalInfomation;
+    private PersonalInformation personalInformation;
     @OneToOne
     private Account account;
     @Embedded

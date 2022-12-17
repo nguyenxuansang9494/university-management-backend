@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Embeddable
-public class PersonalInfomation {
+public class PersonalInformation {
     private String firstName;
     private String fullName;
     private Date dob;
