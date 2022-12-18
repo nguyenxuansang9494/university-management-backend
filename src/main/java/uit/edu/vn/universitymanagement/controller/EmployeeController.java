@@ -10,7 +10,7 @@ import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 @RestController
 @RequestMapping("api/employee")
 public class EmployeeController extends AbstractCrudController<Employee, EmployeeDto> {
-    public EmployeeController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Employee> service, Class<Employee> employeeClass, Class<EmployeeDto> dtoClass) {
-        super(modelMapperWrapper, service, employeeClass, dtoClass);
+    public EmployeeController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Employee> service) {
+        super(modelMapperWrapper, service, Employee.class, EmployeeDto.class);
     }
 }

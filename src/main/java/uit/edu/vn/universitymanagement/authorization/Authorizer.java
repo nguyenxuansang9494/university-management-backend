@@ -9,19 +9,19 @@ import java.util.Objects;
 
 public interface Authorizer<T> {
     default boolean authorize(Authentication authentication, ActionType actionType, T object) {
-        return Authorizer.allowAllToReadButOnlyCertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR);
+        return Authorizer.allowACertainRoleAboveToReadAndACertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR, Role.STUDENT);
     }
 
     default boolean batchAuthorize(Authentication authentication, ActionType actionType, List<T> objects) {
         return objects.stream().map(obj -> authorize(authentication, actionType, obj)).reduce((Boolean::logicalAnd)).orElse(false);
     }
 
-    static boolean allowAllToReadButOnlyCertainRoleAboveToWrite(Authentication authentication, ActionType actionType, Role role) {
+    static boolean allowACertainRoleAboveToReadAndACertainRoleAboveToWrite(Authentication authentication, ActionType actionType, Role writeRole, Role readRole) {
         Account account = AuthenticationUtils.getAccount(authentication);
         if (actionType.ordinal() > ActionType.READ.ordinal()) {
-            return account.getAuthorities().stream().map(Role.class::cast).map(Role::ordinal).anyMatch(e -> e >= role.ordinal());
+            return account.getAuthorities().stream().map(Role.class::cast).map(Role::ordinal).anyMatch(e -> e >= writeRole.ordinal());
         }
-        return true;
+        return account.getAuthorities().stream().map(Role.class::cast).map(Role::ordinal).anyMatch(e -> e >= readRole.ordinal());
     }
 
     static boolean allowOwnerToWrite(Authentication authentication, ActionType actionType, Account account) {

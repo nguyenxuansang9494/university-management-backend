@@ -7,17 +7,18 @@ import uit.edu.vn.universitymanagement.authorization.Authorizer;
 import uit.edu.vn.universitymanagement.authorization.Role;
 import uit.edu.vn.universitymanagement.model.entity.Teacher;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
+import uit.edu.vn.universitymanagement.util.PersonalIDGenerator;
 
 @Service
-public class CrudTeacherService extends AbstractCrudService<Teacher> {
-    public CrudTeacherService(CommonJpaRepository<Teacher, Long> repository) {
-        super(repository);
+public class CrudTeacherService extends CrudPersonService<Teacher> {
+    public CrudTeacherService(CommonJpaRepository<Teacher, Long> repository, PersonalIDGenerator generator) {
+        super(repository, generator);
     }
 
     @Override
     public boolean authorize(Authentication authentication, ActionType actionType, Teacher object) {
         boolean isOwner = Authorizer.allowOnlyOwnerToInteractWith(authentication, object.getAccount());
-        boolean allowModToReadWrite = Authorizer.allowOnlyCertainRoleAboveToReadWrite(authentication, Role.MODERATOR);
-        return isOwner || allowModToReadWrite;
+        boolean allowModToWriteAndAllToRead = Authorizer.allowACertainRoleAboveToReadAndACertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR, Role.STUDENT);
+        return isOwner || allowModToWriteAndAllToRead;
     }
 }

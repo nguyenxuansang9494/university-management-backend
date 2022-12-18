@@ -10,7 +10,7 @@ import uit.edu.vn.universitymanagement.util.ModelMapperWrapper;
 @RestController
 @RequestMapping("/api/teacher")
 public class TeacherController extends AbstractCrudController<Teacher, TeacherDto> {
-    public TeacherController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Teacher> service, Class<Teacher> teacherClass, Class<TeacherDto> dtoClass) {
-        super(modelMapperWrapper, service, teacherClass, dtoClass);
+    public TeacherController(ModelMapperWrapper modelMapperWrapper, AbstractCrudService<Teacher> service) {
+        super(modelMapperWrapper, service, Teacher.class, TeacherDto.class);
     }
 }

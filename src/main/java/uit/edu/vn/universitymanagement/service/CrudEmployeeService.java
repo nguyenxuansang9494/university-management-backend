@@ -1,12 +1,23 @@
 package uit.edu.vn.universitymanagement.service;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import uit.edu.vn.universitymanagement.authorization.ActionType;
+import uit.edu.vn.universitymanagement.authorization.Authorizer;
+import uit.edu.vn.universitymanagement.authorization.Role;
 import uit.edu.vn.universitymanagement.model.entity.Employee;
-import uit.edu.vn.universitymanagement.repository.EmployeeRepository;
+import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
+import uit.edu.vn.universitymanagement.util.PersonalIDGenerator;
 
 @Service
-public class CrudEmployeeService extends AbstractCrudService<Employee> {
-    public CrudEmployeeService(EmployeeRepository repository) {
-        super(repository);
+public class CrudEmployeeService extends CrudPersonService<Employee> {
+    public CrudEmployeeService(CommonJpaRepository<Employee, Long> repository, PersonalIDGenerator generator) {
+        super(repository, generator);
+    }
+    @Override
+    public boolean authorize(Authentication authentication, ActionType actionType, Employee object) {
+        boolean isAllowOnlyModToWriteAndAllToRead = Authorizer.allowACertainRoleAboveToReadAndACertainRoleAboveToWrite(authentication, actionType, Role.MODERATOR, Role.STUDENT);
+        boolean isAllowOwnerToWrite = Authorizer.allowOwnerToWrite(authentication, actionType, object.getAccount());
+        return isAllowOwnerToWrite || isAllowOnlyModToWriteAndAllToRead;
     }
 }
