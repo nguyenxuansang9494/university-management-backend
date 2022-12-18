@@ -10,9 +10,9 @@ import uit.edu.vn.universitymanagement.util.PersonalIDGenerator;
 
 import java.util.List;
 
-public class CrudPersonService<K extends Person> extends AbstractCrudService<K> {
+public abstract class CrudPersonService<K extends Person> extends AbstractCrudService<K> {
     private final PersonalIDGenerator generator;
-    public CrudPersonService(CommonJpaRepository<K, Long> repository, PersonalIDGenerator generator) {
+    protected CrudPersonService(CommonJpaRepository<K, Long> repository, PersonalIDGenerator generator) {
         super(repository);
         this.generator = generator;
     }
