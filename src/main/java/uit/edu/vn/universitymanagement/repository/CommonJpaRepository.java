@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
 public interface CommonJpaRepository<T, L> extends JpaRepository<T, L> {
@@ -17,4 +18,6 @@ public interface CommonJpaRepository<T, L> extends JpaRepository<T, L> {
 
     void deleteByIdIn(List<L> ids);
     Integer countByIdIn(List<L> ids);
+    Optional<L> findTopByOrderByIdDesc();
+
 }

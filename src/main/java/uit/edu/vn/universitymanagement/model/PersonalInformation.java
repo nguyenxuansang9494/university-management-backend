@@ -22,6 +22,7 @@ public class PersonalInformation {
     private String personalID;
     private String firstName;
     private String fullName;
+    private Date registerDate;
     private Date dob;
     private String address;
     private String birthPlace;
