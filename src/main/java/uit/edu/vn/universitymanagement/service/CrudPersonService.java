@@ -11,16 +11,15 @@ import uit.edu.vn.universitymanagement.util.PersonalIDGenerator;
 import java.util.List;
 
 public abstract class CrudPersonService<K extends Person> extends AbstractCrudService<K> {
-    private final PersonalIDGenerator generator;
-    protected CrudPersonService(CommonJpaRepository<K, Long> repository, PersonalIDGenerator generator) {
+    protected CrudPersonService(CommonJpaRepository<K, Long> repository) {
         super(repository);
-        this.generator = generator;
     }
 
     @Override
     public K create(Authentication authentication, K object) {
-        object.getPersonalInformation().setPersonalID(generator.generate(object));
-        return super.create(authentication, object);
+        K savedObject = super.create(authentication, object);
+        savedObject.getPersonalInformation().setPersonalID(PersonalIDGenerator.generate(savedObject));
+        return repository.save(savedObject);
     }
 
     @Override
@@ -32,8 +31,9 @@ public abstract class CrudPersonService<K extends Person> extends AbstractCrudSe
 
     @Override
     public List<K> create(Authentication authentication, List<K> objects) {
-        objects.forEach(e -> e.getPersonalInformation().setPersonalID(generator.generate(e)));
-        return super.create(authentication, objects);
+        List<K> savedObject = super.create(authentication, objects);
+        savedObject.forEach(e -> e.getPersonalInformation().setPersonalID(PersonalIDGenerator.generate(e)));
+        return repository.saveAll(savedObject);
     }
 
     @Override

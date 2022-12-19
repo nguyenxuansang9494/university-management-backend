@@ -21,8 +21,8 @@ public class PersonalInformation {
     @Column(unique = true, nullable = false)
     private String personalID;
     private String firstName;
-    private String fullName;
-    private Date registerDate;
+    private String lastName;
+    private Date registerDate = new Date();
     private Date dob;
     private String address;
     private String birthPlace;
