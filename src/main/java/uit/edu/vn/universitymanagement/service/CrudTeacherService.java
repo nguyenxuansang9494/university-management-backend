@@ -7,12 +7,11 @@ import uit.edu.vn.universitymanagement.authorization.Authorizer;
 import uit.edu.vn.universitymanagement.authorization.Role;
 import uit.edu.vn.universitymanagement.model.entity.Teacher;
 import uit.edu.vn.universitymanagement.repository.CommonJpaRepository;
-import uit.edu.vn.universitymanagement.util.PersonalIDGenerator;
 
 @Service
 public class CrudTeacherService extends CrudPersonService<Teacher> {
-    public CrudTeacherService(CommonJpaRepository<Teacher, Long> repository, PersonalIDGenerator generator) {
-        super(repository, generator);
+    public CrudTeacherService(CommonJpaRepository<Teacher, Long> repository) {
+        super(repository);
     }
 
     @Override
